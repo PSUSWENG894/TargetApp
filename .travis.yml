@@ -18,7 +18,7 @@ matrix:
       deploy:
         provider: pages
         skip-cleanup: true
-        github-token: "c33293d64a7d327d7c41565dfdd94ea7d94f6ff9"
+        github-token: 497a167604b9133b16197df5c2c5b20eafc31dbb
         keep-history: true
         verbose: true
         on:
