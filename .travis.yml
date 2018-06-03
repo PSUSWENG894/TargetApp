@@ -6,7 +6,7 @@ matrix:
         - "node"
         - "iojs"
       before_script:
-        - cd front-end
+        - cd frontend
       install:
         - npm install -g codecov
       script:
