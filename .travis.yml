@@ -1,0 +1,16 @@
+matrix:
+  include:
+
+    - language: node_js
+      node_js:
+        - "node"
+        - "iojs"
+      before_script:
+        - cd front-end
+      install:
+        - npm install -g codecov
+      script:
+        - npm install
+        - npm run build
+        - npm run test:unit
+        - codecov
