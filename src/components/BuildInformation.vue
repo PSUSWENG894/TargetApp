@@ -1,7 +1,7 @@
 <template>
     <div class="display-items">
       <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount"/>
-       <md-list v-for="build in info" v-bind:key="build.id">
+       <md-list v-if="loaded" v-for="build in info" v-bind:key="build.id">
           <md-list-item>
             <div class="md-list-item-text">
               <span>{{build.number}} - {{build.created_by.login}}</span>
@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import * as constants from '../../config/local.env.js'
-import axios from 'axios'
-import PassFailChart  from './PassFailChart'
+import axios from 'axios';
+import PassFailChart  from './PassFailChart';
+import * as constants from '../../vue.config.js';
 
 export default {
   components: {
@@ -25,7 +25,8 @@ export default {
   },
   props:{
     targetRepository: String,
-    method: String
+    method: String,
+    apiKey: String
   },
   data: function () {
         return {
@@ -46,7 +47,7 @@ export default {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Travis-API-Version': '3',
-        'Authorization': `token ${constants.API_KEY}`
+        'Authorization': `token ${this.apiKey}`
         }
       }).then(result => {  
                 this.info = result.data.builds
