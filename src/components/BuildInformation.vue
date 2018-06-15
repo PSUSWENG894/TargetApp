@@ -17,7 +17,7 @@
 <script>
 import axios from 'axios';
 import PassFailChart  from './PassFailChart';
-import * as constants from '../../vue.config.js';
+import * as constants from '../../config';
 
 export default {
   components: {
@@ -37,7 +37,7 @@ export default {
         }
     },
    mounted () {
-     const api = `${constants.API_URL}/${this.targetRepository}/${this.method}`;
+     const api = `${constants.apiURL}/${this.targetRepository}/${this.method}`;
      const passedKey = 'passed';
       axios({ 
         method: 'GET', 

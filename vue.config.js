@@ -1,3 +1,11 @@
-export const NODE_ENV = 'dev';
-export const DEBUG_MODE = true;
-export const API_URL = 'https://api.travis-ci.org/repo';
+module.exports = {
+    pwa: {
+        name: 'Travis CI Dashboard',
+        themeColor: '#4DBA87',
+        msTileColor: '#000000',
+        appleMobileWebAppCapable: 'yes',
+        appleMobileWebAppStatusBarStyle: 'black',
+        // configure the workbox plugin
+        workboxPluginMode: 'GenerateSW'
+    }
+}
