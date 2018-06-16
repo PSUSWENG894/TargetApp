@@ -54,9 +54,7 @@ export default {
                 this.failCount = this.info.filter(x=> x.state !== passedKey).length
                 this.passCount = this.info.filter(x=> x.state === passedKey).length
                 this.loaded = true
-                console.log(result)
             }, error => {
-                console.error(error);
                 this.info= ['Failed to load API']
             })
    }
