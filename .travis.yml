@@ -26,6 +26,8 @@ matrix:
 
       before_deploy:
         - zip -r deploy.zip package.json src/ public/
+        - cd dist zip -r build.zip
 
       after_deploy:
         - unzip -l deploy.zip 
+        - unzip -l build.zip
