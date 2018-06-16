@@ -28,7 +28,5 @@ matrix:
         - zip -r build.zip *
         - mv build.zip ../
         - cd ../
-
-      after_deploy:
         - unzip -l deploy.zip 
-        - unzip -l build.zip
+        - unzip -l build.zip       
