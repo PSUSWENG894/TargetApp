@@ -24,6 +24,7 @@
       </md-card>
     </form>
     <BuildInformation v-if="isAuthenticated" targetRepository="PSUSWENG894%2FTravisCI-Lambda" method="builds" v-bind:apiKey="form.apiKey"/>
+    <BuildInformation v-if="isAuthenticated" targetRepository="PSUSWENG894%2FnlpApp" method="builds" v-bind:apiKey="form.apiKey"/>
   </div>
 </template>
 
