@@ -22,6 +22,8 @@ describe('BuildInformation.vue', () => {
         axios.get.mockResolvedValue(Promise.resolve(response))
         const Constructor = Vue.extend(BuildInformation)
         const component = new Constructor().$mount()
+        
+        console.log(component.info)
 
         expect(component.info).toBeTruthy()
         expect(component.passCount).toBe(1)
