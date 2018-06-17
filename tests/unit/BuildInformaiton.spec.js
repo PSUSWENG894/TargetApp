@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BuildInformation from '@/components/BuildInformation'
-import { axios } from 'axios'
+import { axios as axios } from 'axios'
 jest.mock('axios', () => require('./axios.mock'));
 
 describe('BuildInformation.vue', () => {
