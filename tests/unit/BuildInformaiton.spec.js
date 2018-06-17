@@ -25,11 +25,11 @@ describe('BuildInformation.vue', () => {
         const component = new Constructor().$mount()
         
         console.log(component)
-        console.log(component.info)
+        console.log(component._data.info)
 
-        expect(component.info).toBeTruthy()
-        expect(component.passCount).toBe(1)
-        expect(component.failCount).toBe(0)
-        expect(component.loaded).toBe(true)
+        expect(component._data.info).toBeTruthy()
+        expect(component._data.passCount).toBe(1)
+        expect(component._data.failCount).toBe(0)
+        expect(component._data.loaded).toBe(true)
     });
 });
