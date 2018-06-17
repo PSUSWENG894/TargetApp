@@ -24,16 +24,15 @@
       </md-card>
     </form>
     <BuildInformation v-if="isAuthenticated" targetRepository="PSUSWENG894%2FTravisCI-Lambda" method="builds" v-bind:apiKey="form.apiKey"/>
+    <BuildInformation v-if="isAuthenticated" targetRepository="PSUSWENG894%2FnlpApp" method="builds" v-bind:apiKey="form.apiKey"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import BuildInformation from './components/BuildInformation'
 export default {
   name: 'app',
   components: {
-    HelloWorld,
     BuildInformation
   },
   data: () => ({

@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "build:production": "vue-cli-service build --dest ''",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "axios": "^0.18.0",
