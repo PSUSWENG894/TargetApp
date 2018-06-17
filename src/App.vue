@@ -29,12 +29,10 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import BuildInformation from './components/BuildInformation'
 export default {
   name: 'app',
   components: {
-    HelloWorld,
     BuildInformation
   },
   data: () => ({
