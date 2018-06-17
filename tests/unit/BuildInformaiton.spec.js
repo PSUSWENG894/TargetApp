@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import BuildInformation from '@/components/BuildInformation'
-import axios from 'axios'
+import { axios } from 'axios'
 jest.mock('axios', () => require('./axios.mock'));
 
 describe('BuildInformation.vue', () => {
@@ -23,6 +23,7 @@ describe('BuildInformation.vue', () => {
         const Constructor = Vue.extend(BuildInformation)
         const component = new Constructor().$mount()
         
+        console.log(component)
         console.log(component.info)
 
         expect(component.info).toBeTruthy()
