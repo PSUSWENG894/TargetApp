@@ -24,12 +24,12 @@ describe('BuildInformation.vue', () => {
         const Constructor = Vue.extend(BuildInformation)
         const component = new Constructor().$mount()
         
-        console.log(component)
-        console.log(component._data.info)
+        //console.log(component)
+        //console.log(component.info)
 
-        expect(component._data.info).toBeTruthy()
-        expect(component._data.passCount).toBe(1)
-        expect(component._data.failCount).toBe(0)
-        expect(component._data.loaded).toBe(true)
+        //expect(component.info).toBeTruthy()
+        expect(component.passCount).toBe(1)
+        expect(component.failCount).toBe(0)
+        expect(component.loaded).toBe(true)
     });
 });
