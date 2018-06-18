@@ -21,12 +21,6 @@ matrix:
         verbose: true
         on:
           branch: master
-
-      before_deploy:
-        - zip -r deploy.zip package.json src/ public/
-        - cd dist 
-        - zip -r build.zip *
-        - mv build.zip ../
-        - cd ../
-        - unzip -l deploy.zip 
-        - unzip -l build.zip       
+        local-dir: dist
+        target-branch: gh-pages
+        verbose: true
