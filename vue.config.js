@@ -8,5 +8,10 @@ module.exports = {
         appleMobileWebAppStatusBarStyle: 'black',
         // configure the workbox plugin
         workboxPluginMode: 'GenerateSW'
+    },
+    configureWebpack: {
+        output: {
+            publicPath: ''
+        }
     }
 }
