@@ -3,6 +3,7 @@ jest.mock('axios', () => require('./axios.mock'));
 import Vue from 'vue'
 import BuildInformation from '@/components/BuildInformation'
 import axios from 'axios'
+import { mount } from '@vue/test-utils'
 
 describe('BuildInformation.vue', () => {
 
@@ -12,24 +13,18 @@ describe('BuildInformation.vue', () => {
         expect(vm).toBeTruthy()
     });
 
-    it('should get data', () => {
+    it('test setData', () => {
         const response = {
-            data: [{
-                builds: [{
-                    state: 'passed',
-                }]
-            }]
+            builds: [
+                {state: 'passed',},
+                {state: 'passed',},
+                {state: 'failed',},
+            ]
         }
-        axios.get.mockResolvedValue(Promise.resolve(response))
-        const Constructor = Vue.extend(BuildInformation)
-        const component = new Constructor().$mount()
-        
-        //console.log(component)
-        //console.log(component.info)
+        const wrapper = mount(BuildInformation)
+        wrapper.vm.setData(response)
 
-        //expect(component.info).toBeTruthy()
-        //expect(component.passCount).toBe(1)
-        //expect(component.failCount).toBe(0)
-        //expect(component.loaded).toBe(true)
+        expect(wrapper.vm.passCount).toBe(2)
+        expect(wrapper.vm.failCount).toBe(1)
     });
 });
