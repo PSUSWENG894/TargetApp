@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-export default class ApiService {
+export default class TravisApiService {
     constructor() {}
 
     get(_url, _apiKey) {
-        return axios({
-            method: 'GET',
-            url: _url,
+        return axios.get(_url, {
             responseType: 'text',
             headers: {
                 'Content-Type': 'application/json',
@@ -14,6 +12,6 @@ export default class ApiService {
                 'Travis-API-Version': '3',
                 'Authorization': `token ${_apiKey}`
             }
-        }).then(result => result.data)
+        }).then(result => result.data);
     }
 }

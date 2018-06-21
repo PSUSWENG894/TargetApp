@@ -11,7 +11,7 @@
 
 <script>
 import BuildInformation from './BuildInformation'
-import ApiService from '../shared';
+import TravisApiService from '../shared';
 import * as constants from '../../config';
 
 export default {
@@ -31,7 +31,7 @@ export default {
         }
     },
     mounted() {
-        this.apiService = new ApiService();
+        this.apiService = new TravisApiService();
         const url = `${constants.apiURL}/owner/${this.organization}/repos`;
         this.apiService.get(url, this.apiKey).then(result => {
             this.repositories = result.repositories;

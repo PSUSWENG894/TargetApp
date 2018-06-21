@@ -1,2 +1,2 @@
-import ApiService from "./api.service";
-export default ApiService;
+import TravisApiService from "./api.service";
+export default TravisApiService;
