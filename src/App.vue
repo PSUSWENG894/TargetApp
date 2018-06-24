@@ -37,14 +37,16 @@
 <script>
 import {
     BuildInformation,
-    Repositories
+    Repositories,
+    BuildButton
 } from './components'
 
 export default {
     name: 'app',
     components: {
         BuildInformation,
-        Repositories
+        Repositories,
+	BuildButton
     },
     data: () => ({
         form: {

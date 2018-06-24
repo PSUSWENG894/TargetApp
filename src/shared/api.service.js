@@ -14,4 +14,16 @@ export default class TravisApiService {
             }
         }).then(result => result.data);
     }
+    
+    post(_url, _body, _apiKey) {
+        return axios.post(_url, _body, {
+            responseType: 'text',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Travis-API-Version': '3',
+                'Authorization': `token ${_apiKey}`
+            }
+        }).then(result => result.data);
+    }
 }

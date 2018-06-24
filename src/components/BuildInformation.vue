@@ -1,6 +1,7 @@
 <template>
 <div class="display-items">
     <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount" />
+    <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:apiKey="apiKey" />
     <md-list v-if="loaded" v-for="build in info" v-bind:key="build.id">
         <md-list-item>
             <div class="md-list-item-text">
@@ -17,12 +18,14 @@
 
 <script>
 import PassFailChart from './PassFailChart';
+import BuildButton from './BuildButton';
 import TravisApiService from '../shared';
 import * as constants from '../../config';
 
 export default {
     components: {
-        PassFailChart
+        PassFailChart,
+	BuildButton
     },
     props: {
         targetRepository: String,
