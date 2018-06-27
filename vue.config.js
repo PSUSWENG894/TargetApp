@@ -13,6 +13,7 @@ module.exports = {
         workboxPluginMode: 'GenerateSW',
         workboxOptions: {
             // Exclude images from the precache
+            include: [/\.html$/, /\.js$/],
             exclude: [/\.(?:png|jpg|jpeg|svg)$/]
         }
     },
