@@ -20,6 +20,12 @@
                             <md-input name="api-key" id="api-key" v-model="form.apiKey" autocomplete="off" type="password" :disabled="isAuthenticated" />
                         </md-field>
                     </div>
+                    <div class="md-layout-item md-small-size-100">
+                        <md-field>
+                            <label for="api-key-github">GitHub Api Token</label>
+                            <md-input name="api-key-github" id="api-key-github" v-model="form.apiKeyGitHub" autocomplete="off" type="password" :disabled="isAuthenticated" />
+                        </md-field>
+                    </div>
                 </div>
             </md-card-content>
 
@@ -28,7 +34,7 @@
             </md-card-actions>
         </md-card>
     </form>
-    <Repositories v-if="isAuthenticated" v-bind:apiKey="form.apiKey" v-bind:organization="form.organization" />
+    <Repositories v-if="isAuthenticated" v-bind:apiKey="form.apiKey" v-bind:organization="form.organization" v-bind:apiKeyGitHub="form.apiKeyGitHub"/>
 </div>
 </template>
 
@@ -46,19 +52,20 @@ export default {
     components: {
         BuildInformation,
         Repositories,
-	BuildButton
+	    BuildButton
     },
     data: () => ({
         form: {
             apiKey: null,
             organization: null,
+            apiKeyGitHub: null
         },
         isAuthenticated: false,
         apiService: null
     }),
     methods: {
         checkForm() {
-            this.isAuthenticated = this.form.apiKey && this.form.organization;
+            this.isAuthenticated = this.form.apiKey && this.form.organization && this.form.apiKeyGitHub;
         }
     }
 }

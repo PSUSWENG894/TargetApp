@@ -2,7 +2,10 @@
 <div>
     <md-tabs v-if="loaded">
         <md-tab v-for="repo in repositories" v-bind:key="repo.id" v-bind:id="repo.name" v-bind:md-label="repo.name">
-            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:apiKey="apiKey" />
+            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:apiKey="apiKey"/>
+        </md-tab>
+        <md-tab v-if="loaded" md-label="GitHub">
+            <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
         </md-tab>
     </md-tabs>
     <p v-if="error">{{error}}</p>
@@ -13,14 +16,17 @@
 import BuildInformation from './BuildInformation'
 import TravisApiService from '../shared';
 import * as constants from '../../config';
+import GitHubInformation from "./GitHubInformation";
 
 export default {
     components: {
+        GitHubInformation,
         BuildInformation
     },
     props: {
         apiKey: String,
         organization: String,
+        apiKeyGitHub: String,
     },
     data: function () {
         return {
