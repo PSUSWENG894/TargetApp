@@ -34,7 +34,7 @@ export default {
             const messageBody = `${constants.buildMasterBody}`;
             const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
             this.apiService = new TravisApiService();
-            this.apiService.post(url, messageBody, this.apiKey).then(result => {
+            GitHubApiService.post(url, messageBody, this.apiKey).then(result => {
                 this.buildId = result.request.id
             }, () => {
                 alert('An error occured');
