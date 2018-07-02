@@ -1,7 +1,6 @@
 <template>
 <div id="app">
     <router-view></router-view>
-    <!-- <Repositories v-if="isAuthenticated" v-bind:apiKey="form.apiKey" v-bind:organization="form.organization" v-bind:apiKeyGitHub="form.apiKeyGitHub" /> -->
 </div>
 </template>
 
