@@ -15,7 +15,6 @@
 </div>
 </template>
 
-
 <script>
 import PassFailChart from './PassFailChart';
 import BuildButton from './BuildButton';
@@ -25,7 +24,7 @@ import * as constants from '../../config';
 export default {
     components: {
         PassFailChart,
-	   BuildButton
+        BuildButton
     },
     props: {
         targetRepository: String,
@@ -46,7 +45,7 @@ export default {
         async fetchData() {
             const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
             this.apiService = new TravisApiService();
-            
+
             const getPromise = this.apiService.get(url, this.apiKey);
             getPromise.then(result => {
                 this.setData(result)
@@ -68,7 +67,6 @@ export default {
     }
 };
 </script>
-
 
 <style lang="scss" scoped>
 .md-list {

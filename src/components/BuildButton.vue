@@ -1,14 +1,13 @@
 <template>
 <div class="build-button">
-    <md-h2>Press the button below to build this repository in Travis-CI.</md-h2>
-    <br></br>
+    <h2>Press the button below to build this repository in Travis-CI.</h2>
+    <br/>
     <md-button class="md-accent md-raised" v-on:click="buildRepo">Build Repo</md-button>
-    <br></br>
+    <br/>
     <p v-if="error">{{error}}</p>
-    <br></br>
+    <br/>
 </div>
 </template>
-
 
 <script>
 import TravisApiService from '../shared';
@@ -27,14 +26,13 @@ export default {
             method: "requests"
         }
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
-        buildRepo(){
+        buildRepo() {
             const messageBody = `${constants.buildMasterBody}`;
             const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
             this.apiService = new TravisApiService();
-            GitHubApiService.post(url, messageBody, this.apiKey).then(result => {
+            this.apiService.post(url, messageBody, this.apiKey).then(result => {
                 this.buildId = result.request.id
             }, () => {
                 alert('An error occured');
@@ -44,7 +42,6 @@ export default {
     }
 };
 </script>
-
 
 <style lang="scss" scoped>
 .build-button {
