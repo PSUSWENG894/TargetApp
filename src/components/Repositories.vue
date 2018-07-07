@@ -7,6 +7,9 @@
         <md-tab v-if="loaded" md-label="GitHub">
             <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
         </md-tab>
+        <md-tab v-if="loaded" md-label="BuildAllRepos">
+            <md-button v-if="loaded" class="md-accent md-raised" v-on:click="buildAll()">Build All Repos</md-button>
+        </md-tab>
     </md-tabs>
     <p v-if="error">{{error}}</p>
 </div>
@@ -33,6 +36,7 @@ export default {
             repositories: null,
             loaded: false,
             error: null,
+            needsReload: false,
             apiService: null
         }
     },
@@ -47,6 +51,32 @@ export default {
     methods: {
         getRepoHref(repo) {
             return repo['@href'];
+        },
+        buildAll(){
+            const url = `${constants.apiURL}/owner/${this.organization}/repos`;
+            this.apiService.get(url, this.apiKey).then(result => {
+                var repos = result.repositories;
+                const messageBody = `${constants.buildMasterBody}`;
+                var index;
+                for (index = 0; index < repos.length; index++) {
+                    var url = `${constants.apiURL}${repos[index]['@href']}/requests`;
+                    this.apiService.post(url, messageBody, this.apiKey).then(result => {
+                        if (!this.needsReload) {
+                            this.needsReload = result.request.id > 0;
+                        }
+                    }, () => {
+                        var errorMessage = "An error occurred and no result was found for " + repos[index].name + ", likely repository was deleted.";
+                        alert(errorMessage);
+                    }, error => {
+                        console.log(error);
+                        alert(error);
+                    });
+                }
+                alert('Successfully sent build request to Travis-CI.org for all repos.');
+            }, error => {
+                console.log(error)
+                alert(error);
+            });
         }
     }
 }

@@ -52,7 +52,7 @@ export default {
     components: {
         BuildInformation,
         Repositories,
-	    BuildButton
+        BuildButton
     },
     data: () => ({
         form: {

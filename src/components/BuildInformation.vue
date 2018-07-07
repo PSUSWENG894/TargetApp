@@ -25,7 +25,7 @@ import * as constants from '../../config';
 export default {
     components: {
         PassFailChart,
-	   BuildButton
+        BuildButton
     },
     props: {
         targetRepository: String,
