@@ -1,6 +1,6 @@
 // https://forum.vuejs.org/t/jest-and-mocking-axios-responses/27937
 const mockAxios = {
-    get: jest.fn().mockImplementation(() => {
+    post: jest.fn().mockImplementation(() => {
       return new Promise( (res, rej) => {
         mockAxios._resolve = res;
         mockAxios._reject = rej;
