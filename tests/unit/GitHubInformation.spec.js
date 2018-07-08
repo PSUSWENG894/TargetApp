@@ -2,7 +2,6 @@ jest.mock('axios', () => require('./axios.mock'));
 
 import Vue from 'vue'
 import GitHubInformation from '@/components/GitHubInformation'
-import axios from 'axios'
 import { mount } from '@vue/test-utils'
 
 describe('GitHubInformation.vue', () => {

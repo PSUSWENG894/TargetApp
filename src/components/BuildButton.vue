@@ -9,7 +9,6 @@
 </div>
 </template>
 
-
 <script>
 import TravisApiService from '../shared';
 import * as constants from '../../config';
@@ -27,10 +26,9 @@ export default {
             method: "requests"
         }
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
-        buildRepo(){
+        buildRepo() {
             const messageBody = `${constants.buildMasterBody}`;
             const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
             this.apiService = new TravisApiService();
@@ -44,7 +42,6 @@ export default {
     }
 };
 </script>
-
 
 <style lang="scss" scoped>
 .build-button {
