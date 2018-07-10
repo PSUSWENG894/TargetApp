@@ -27,22 +27,41 @@
                 info: null,
                 error: null,
                 apiService: null,
-                method: "repos",
+                method: "stats/contributors",
                 loaded: false
             }
         },
         methods: {
             async fetchData() { ///repos/:owner/:repo/stats/contributors
-                const url = `${constants.apiURLGitHub}/repos/PSUSWENG894/TargetApp/stats/contributors`;
-                this.apiService = new GitHubApiService();
+                //const repo = 'TargetApp'
+                const repositoryList = ['TargetApp', 'BudgetAPI'];
+                const repo = repositoryList[0];
 
-                const getPromise = this.apiService.get(url, this.apiKeyGitHub);
-                getPromise.then(result => {
-                    this.setData(result)
-                }, () => {
-                    this.error = 'An error occured';
+                this.apiService = new GitHubApiService();
+                const promiseList = []
+                repositoryList.forEach(repo => {
+                    const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
+                    
+                    const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+                    promiseList.push(getPromise);
+                })
+
+                Promise.all(promiseList).then(results => {
+                    const mergedResults = [].concat.apply([], results);
+                    console.log(mergedResults);
+                    this.setData(mergedResults);
                 });
-                return getPromise;
+
+                // const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
+                // this.apiService = new GitHubApiService();
+
+                // const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+                // getPromise.then(result => {
+                //     this.setData(result)
+                // }, () => {
+                //     this.error = 'An error occured';
+                // });
+                // return getPromise;
             },
             setData(theData) {
                 console.log('Lines per dev data:');
