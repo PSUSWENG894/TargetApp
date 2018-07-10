@@ -43,29 +43,48 @@
                     const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
                     
                     const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+                    getPromise.repo = repo;
                     promiseList.push(getPromise);
                 })
 
-                Promise.all(promiseList).then(results => {
-                    const mergedResults = [].concat.apply([], results);
-                    console.log(mergedResults);
+                const repoPromiseList = Promise.all(promiseList).then(results => {
+                    const mergedResults = this.organizeData(promiseList, results);
                     this.setData(mergedResults);
                 });
 
-                // const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
-                // this.apiService = new GitHubApiService();
+                return repoPromiseList;
+            },
+            organizeData(promiseList, results) {
+                console.log('Promises');
+                console.log(promiseList);
+                console.log('Results');
+                console.log(results);
 
-                // const getPromise = this.apiService.get(url, this.apiKeyGitHub);
-                // getPromise.then(result => {
-                //     this.setData(result)
-                // }, () => {
-                //     this.error = 'An error occured';
-                // });
-                // return getPromise;
+                let mergedResults = [].concat.apply([], results);
+                let organizedData = {}
+
+                mergedResults.forEach((contribution, index) => {
+                    console.log('Index');
+                    console.log(index);
+                    const author = contribution.author.login;
+                    // const repo = contribution
+                    // const repoContribution = 
+                    // organizedData[author]
+                    // [{author: author, contributions: [repo:repo, contribution: contribution]}]
+                    
+                });
+                return mergedResults;
             },
             setData(theData) {
                 console.log('Lines per dev data:');
                 console.log(theData);
+
+                const newList = [];
+                // theData.forEach(contribution => {
+                //     console.log('Contribution');
+                //     console.log(contribution.author.login);
+                // });
+
                 this.info = theData;
                 this.loaded = true
             }
