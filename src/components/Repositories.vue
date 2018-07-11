@@ -11,7 +11,7 @@
             <md-button v-if="loaded" class="md-accent md-raised" v-on:click="buildAll()">Build All Repos</md-button>
         </md-tab>
         <md-tab v-if="loaded" md-label="Lines">
-            <LinesPerDeveloper v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
+            <DeveloperContributions v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
         </md-tab>
     </md-tabs>
     <p v-if="error">{{error}}</p>
@@ -23,13 +23,13 @@ import BuildInformation from './BuildInformation'
 import TravisApiService from '../shared';
 import * as constants from '../../config';
 import GitHubInformation from "./GitHubInformation";
-import LinesPerDeveloper from "./LinesPerDeveloper";
+import DeveloperContributions from "./DeveloperContributions";
 
 export default {
     components: {
         GitHubInformation,
         BuildInformation,
-        LinesPerDeveloper
+        DeveloperContributions
     },
     props: {
         apiKey: String,
