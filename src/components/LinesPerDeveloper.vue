@@ -1,13 +1,54 @@
 <template>
-  <div class="display-items">
-      <md-list v-if="loaded" id="linesPerDev" v-for="contribution in info" v-bind:key="contribution.id">
-          <md-list-item>
-              <div class="md-list-item-text">
-                  <span>{{contribution.author.login}}</span>
-                  <span>Total Commits: {{contribution.total}}</span>
-              </div>
-          </md-list-item>
-      </md-list>
+    <div class="display-items">
+        <!-- <md-list v-if="loaded" id="linesPerDev" v-for="authorContributions in info" v-bind:key="authorContributions.author">
+            <md-list-item>
+                <div class="md-list-item-text">
+                    <md-card>
+                        <md-card-header>
+                            <md-card-header-text>
+                                <div class="md-title">{{authorContributions.author}}</div>
+                            </md-card-header-text>
+                        </md-card-header>
+                        <md-card-content>
+                            <md-list id="authorContributionList" v-for="repoContributions in authorContributions.contributions">
+                                <md-list-item>
+                                    <div class="md-list-item-text">
+                                        <span>Repositoy: {{repoContributions.repository}}</span>
+                                        <span>Total: {{repoContributions.contribution.total}}</span>
+                                    </div>
+                                </md-list-item>
+                            </md-list>
+                        </md-card-content>
+                    </md-card>
+                </div>
+            </md-list-item>
+        </md-list> -->
+
+        <div v-if="loaded" id="aaaaaalinesPerDev" v-for="authorContributions in info" v-bind:key="authorContributions.author">
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <div class="md-title">User: {{authorContributions.author}}</div>
+                    </md-card-header-text>
+                </md-card-header>
+                <md-card-content>
+                    <md-list class="md-double-line" id="authorContributionList" v-for="repoContributions in authorContributions.contributions">
+                        <md-list-item>
+                            <div class="md-list-item-text">
+                                <span>Repositoy: {{repoContributions.repository}}</span>
+                            </div>
+                        </md-list-item>
+                        <md-list-item >
+                            <div class="md-list-item-text">
+                                <span>Total commits: {{repoContributions.contribution.total}}</span>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-card-content>
+            </md-card>
+        </div>
+        
+
   </div>
 </template>
 
@@ -48,8 +89,8 @@
                 })
 
                 const repoPromiseList = Promise.all(promiseList).then(results => {
-                    const mergedResults = this.organizeData(promiseList, results);
-                    this.setData(mergedResults);
+                    const organizedData = this.organizeData(promiseList, results);
+                    this.setData(organizedData);
                 });
 
                 return repoPromiseList;
@@ -60,20 +101,32 @@
                 console.log('Results');
                 console.log(results);
 
-                let mergedResults = [].concat.apply([], results);
-                let organizedData = {}
+                const dictByAuthor = {}                
+                results.forEach((result, index) => {
 
-                mergedResults.forEach((contribution, index) => {
-                    console.log('Index');
-                    console.log(index);
-                    const author = contribution.author.login;
-                    // const repo = contribution
-                    // const repoContribution = 
-                    // organizedData[author]
-                    // [{author: author, contributions: [repo:repo, contribution: contribution]}]
-                    
+                    result.forEach(contribution => {
+                        const repo = promiseList[index].repo
+                        const author = contribution.author.login;
+                        console.log('Repo: ' + repo);
+                        console.log('Author: ' + author);
+
+                        const authorContributions = dictByAuthor[author] ? dictByAuthor[author] : []
+                        authorContributions.push({'repository': repo, 'contribution': contribution})
+                        dictByAuthor[author] = authorContributions;
+                    });
                 });
-                return mergedResults;
+
+                //Collapse it
+                let organizedData = []
+                Object.keys(dictByAuthor).forEach(author => {
+                    organizedData.push({'author': author, 'contributions': dictByAuthor[author]})
+                });
+
+                console.log('Total results');
+                console.log(dictByAuthor)
+                console.log('Collapsed to');
+                console.log(organizedData)
+                return organizedData;
             },
             setData(theData) {
                 console.log('Lines per dev data:');
@@ -105,6 +158,12 @@
     }
 
     .display-items {
-        display: inline;
+        display: inline-block;
+        color: #228B22;
+        
+    }
+    .md-card {
+        color: #228B22;
+        border: 1px solid rgba(#000, .12);
     }
 </style>
