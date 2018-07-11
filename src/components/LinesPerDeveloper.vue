@@ -166,4 +166,7 @@
         color: #228B22;
         border: 1px solid rgba(#000, .12);
     }
+    .md-list-item-text {
+        color: #228B22;
+    }
 </style>
