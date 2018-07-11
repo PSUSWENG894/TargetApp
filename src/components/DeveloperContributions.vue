@@ -48,10 +48,22 @@
         },
         methods: {
             async fetchData() { ///repos/:owner/:repo/stats/contributors
-                const repositoryList = ['TargetApp', 'BudgetAPI'];
-                const repo = repositoryList[0];
-
                 this.apiService = new GitHubApiService();
+
+                let repoPromiseList = [];
+
+                const repositoryListPromise = this.getRepositoryListPromise();
+                repositoryListPromise.then(reposResult => {
+                    const repositoryList = []
+                    reposResult.forEach(repoResult => {
+                        repositoryList.push(repoResult.name)
+                    });
+                    repoPromiseList = this.getRepositoryContributions(repositoryList);
+                });
+                
+                return repoPromiseList;
+            },
+            getRepositoryContributions(repositoryList) {
                 const promiseList = []
                 repositoryList.forEach(repo => {
                     const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
@@ -67,6 +79,11 @@
                 });
 
                 return repoPromiseList;
+            },
+            getRepositoryListPromise() {
+                const url = `${constants.apiURLGitHub}/orgs/${this.organization}/repos`;
+                const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+                return getPromise;
             },
             organizeData(promiseList, results) {
                 const dictByAuthor = {}                
