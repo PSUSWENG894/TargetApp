@@ -1,5 +1,7 @@
 <template>
   <div class="display-items">
+      <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+      <br/>
       <md-list v-if="loaded" id="githubDump" v-for="repo in info" v-bind:key="repo.id">
           <md-list-item>
               <div class="md-list-item-text">
@@ -27,7 +29,10 @@
                 error: null,
                 apiService: null,
                 method: "repos",
-                loaded: false
+                loaded: false,
+                startTime: new Date().getTime(),
+                timeBetweenCalls: 300000, //ms
+                autoReload: true,
             }
         },
         methods: {
@@ -39,17 +44,31 @@
                 getPromise.then(result => {
                     this.setData(result)
                 }, () => {
-                    this.error = 'An error occured';
+                    this.error = 'An error occurred';
                 });
                 return getPromise;
             },
             setData(theData) {
-                this.info = theData;
-                this.loaded = true
+                this.info = theData.data;
+                this.loaded = true;
+
+                if(this.autoReload) {
+                    let now = new Date().getTime();
+                    console.log('reload: ' + (now - this.startTime) + ' github');
+                    setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+                }
             }
         },
         mounted() {
             this.fetchData();
+        },
+        watch: {
+            'autoReload': function(newVal, oldVal) {
+                console.log('value changed from ' + oldVal + ' to ' + newVal);
+                if(oldVal === false && newVal === true){
+                    this.fetchData();
+                }
+            }
         }
     };
 </script>

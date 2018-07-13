@@ -1,5 +1,7 @@
 <template>
     <div class="display-items">
+        <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+        <br/>
         <div v-if="loaded" id="aaaaaalinesPerDev" v-for="authorContributions in info" v-bind:key="authorContributions.author">
             <md-card>
                 <md-card-header>
@@ -43,7 +45,10 @@
                 error: null,
                 apiService: null,
                 method: "stats/contributors",
-                loaded: false
+                loaded: false,
+                startTime: new Date().getTime(),
+                timeBetweenCalls: 300000, //ms
+                autoReload: true,
             }
         },
         methods: {
@@ -54,8 +59,8 @@
 
                 const repositoryListPromise = this.getRepositoryListPromise();
                 repositoryListPromise.then(reposResult => {
-                    const repositoryList = []
-                    reposResult.forEach(repoResult => {
+                    const repositoryList = [];
+                    reposResult.data.forEach(repoResult => {
                         repositoryList.push(repoResult.name)
                     });
                     repoPromiseList = this.getRepositoryContributions(repositoryList);
@@ -89,7 +94,7 @@
                 const dictByAuthor = {}                
                 results.forEach((result, index) => {
 
-                    result.forEach(contribution => {
+                    result.data.forEach(contribution => {
                         const repo = promiseList[index].repo
                         const author = contribution.author.login;
 
@@ -109,11 +114,25 @@
             },
             setData(theData) {
                 this.info = theData;
-                this.loaded = true
+                this.loaded = true;
+                
+                if(this.autoReload) {
+                    let now = new Date().getTime();
+                    console.log('reload: ' + (now - this.startTime) + ' repo:'+ this.targetRepository );
+                    setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+                }
             }
         },
         mounted() {
             this.fetchData();
+        },
+        watch: {
+            'autoReload': function(newVal, oldVal) {
+                console.log('value changed from ' + oldVal + ' to ' + newVal);
+                if(oldVal === false && newVal === true){
+                    this.fetchData();
+                }
+            }
         }
     };
 </script>
