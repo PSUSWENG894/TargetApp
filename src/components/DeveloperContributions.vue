@@ -1,6 +1,7 @@
 <template>
     <div class="display-items">
         <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+        <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
         <br/>
         <div v-if="loaded" id="aaaaaalinesPerDev" v-for="authorContributions in info" v-bind:key="authorContributions.author">
             <md-card>
@@ -49,6 +50,7 @@
                 startTime: new Date().getTime(),
                 timeBetweenCalls: 300000, //ms
                 autoReload: true,
+                lastReload: new Date(),
             }
         },
         methods: {
@@ -60,7 +62,7 @@
                 const repositoryListPromise = this.getRepositoryListPromise();
                 repositoryListPromise.then(reposResult => {
                     const repositoryList = [];
-                    reposResult.data.forEach(repoResult => {
+                    reposResult.forEach(repoResult => {
                         repositoryList.push(repoResult.name)
                     });
                     repoPromiseList = this.getRepositoryContributions(repositoryList);
@@ -69,7 +71,7 @@
                 return repoPromiseList;
             },
             getRepositoryContributions(repositoryList) {
-                const promiseList = []
+                const promiseList = [];
                 repositoryList.forEach(repo => {
                     const url = `${constants.apiURLGitHub}/repos/${this.organization}/${repo}/${this.method}`;
                     
@@ -93,10 +95,10 @@
                 return getPromise;
             },
             organizeData(promiseList, results) {
-                const dictByAuthor = {}                
+                const dictByAuthor = {};
                 results.forEach((result, index) => {
 
-                    result.data.forEach(contribution => {
+                    result.forEach(contribution => {
                         const repo = promiseList[index].repo
                         const author = contribution.author.login;
 
@@ -107,7 +109,7 @@
                 });
 
                 //Now package it in a nice JSON
-                let organizedData = []
+                let organizedData = [];
                 Object.keys(dictByAuthor).forEach(author => {
                     organizedData.push({'author': author, 'contributions': dictByAuthor[author]})
                 });
@@ -117,11 +119,11 @@
             setData(theData) {
                 this.info = theData;
                 this.loaded = true;
-                
+
                 if(this.autoReload) {
-                    let now = new Date().getTime();
-                    console.log('reload: ' + (now - this.startTime) + ' repo:'+ this.targetRepository );
-                    setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+                    let date = new Date();
+                    setTimeout(this.fetchData, this.timeBetweenCalls);
+                    this.lastReload = date;
                 }
             }
         },
@@ -130,7 +132,6 @@
         },
         watch: {
             'autoReload': function(newVal, oldVal) {
-                console.log('value changed from ' + oldVal + ' to ' + newVal);
                 if(oldVal === false && newVal === true){
                     this.fetchData();
                 }
