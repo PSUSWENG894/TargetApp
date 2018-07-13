@@ -1,6 +1,7 @@
 <template>
 <div class="display-items">
     <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+    <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
     <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount" />
     <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:apiKey="apiKey" />
     <md-list v-if="loaded" id="wah" v-for="build in info" v-bind:key="build.id">
@@ -41,8 +42,9 @@ export default {
             method: "builds",
             loaded: false,
             startTime: new Date().getTime(),
-            timeBetweenCalls: 5000,
+            timeBetweenCalls: 300000, //ms
             autoReload: true,
+            lastReload: new Date(),
         }
     },
     methods: {
@@ -66,9 +68,9 @@ export default {
             this.loaded = true;
 
             if(this.autoReload) {
-                let now = new Date().getTime();
-                console.log('reload: ' + (now - this.startTime) + ' repo:'+ this.targetRepository );
-                setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+                let date = new Date();
+                setTimeout(this.fetchData, this.timeBetweenCalls);
+                this.lastReload = date;
             }
         }
     },
@@ -77,7 +79,6 @@ export default {
     },
     watch: {
         'autoReload': function(newVal, oldVal) {
-            console.log('value changed from ' + oldVal + ' to ' + newVal);
             if(oldVal === false && newVal === true){
                 this.fetchData();
             }

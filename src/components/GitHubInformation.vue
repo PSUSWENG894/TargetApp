@@ -1,6 +1,7 @@
 <template>
   <div class="display-items">
-      <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+      <md-switch type="checkbox" v-model="autoReload">AutoReload </md-switch>
+      <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
       <br/>
       <md-list v-if="loaded" id="githubDump" v-for="repo in info" v-bind:key="repo.id">
           <md-list-item>
@@ -33,6 +34,7 @@
                 startTime: new Date().getTime(),
                 timeBetweenCalls: 300000, //ms
                 autoReload: true,
+                lastReload: new Date(),
             }
         },
         methods: {
@@ -49,13 +51,13 @@
                 return getPromise;
             },
             setData(theData) {
-                this.info = theData.data;
+                this.info = theData;
                 this.loaded = true;
 
                 if(this.autoReload) {
-                    let now = new Date().getTime();
-                    console.log('reload: ' + (now - this.startTime) + ' github');
-                    setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+                    let date = new Date();
+                    setTimeout(this.fetchData, this.timeBetweenCalls);
+                    this.lastReload = date;
                 }
             }
         },
@@ -64,7 +66,6 @@
         },
         watch: {
             'autoReload': function(newVal, oldVal) {
-                console.log('value changed from ' + oldVal + ' to ' + newVal);
                 if(oldVal === false && newVal === true){
                     this.fetchData();
                 }
