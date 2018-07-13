@@ -1,5 +1,6 @@
 <template>
 <div class="display-items">
+    <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
     <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount" />
     <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:apiKey="apiKey" />
     <md-list v-if="loaded" id="wah" v-for="build in info" v-bind:key="build.id">
@@ -38,7 +39,10 @@ export default {
             passCount: 0,
             apiService: null,
             method: "builds",
-            loaded: false
+            loaded: false,
+            startTime: new Date().getTime(),
+            timeBetweenCalls: 5000,
+            autoReload: true,
         }
     },
     methods: {
@@ -48,22 +52,36 @@ export default {
 
             const getPromise = this.apiService.get(url, this.apiKey);
             getPromise.then(result => {
-                this.setData(result)
+                this.setData(result);
             }, () => {
-                this.error = 'An error occured';
-            })
+                this.error = 'An error occurred';
+            });
             return getPromise;
         },
         setData(theData) {
             const passedKey = 'passed';
-            this.info = theData.builds
-            this.failCount = this.info.filter(x => x.state !== passedKey).length
-            this.passCount = this.info.filter(x => x.state === passedKey).length
-            this.loaded = true
+            this.info = theData.builds;
+            this.failCount = this.info.filter(x => x.state !== passedKey).length;
+            this.passCount = this.info.filter(x => x.state === passedKey).length;
+            this.loaded = true;
+
+            if(this.autoReload) {
+                let now = new Date().getTime();
+                console.log('reload: ' + (now - this.startTime) + ' repo:'+ this.targetRepository );
+                setTimeout(this.fetchData, this.timeBetweenCalls - ((now - this.startTime) % this.timeBetweenCalls));
+            }
         }
     },
     mounted() {
         this.fetchData();
+    },
+    watch: {
+        'autoReload': function(newVal, oldVal) {
+            console.log('value changed from ' + oldVal + ' to ' + newVal);
+            if(oldVal === false && newVal === true){
+                this.fetchData();
+            }
+        }
     }
 };
 </script>

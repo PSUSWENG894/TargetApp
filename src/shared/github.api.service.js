@@ -12,7 +12,7 @@ export default class GitHubApiService {
                 'Accept': 'application/vnd.github.v3+json',
                 'Authorization': `token ${_apiKey}`
             }
-        }).then(result => result.data);
+        });
     }
 
     post(_url, _body, _apiKey) {
@@ -23,6 +23,6 @@ export default class GitHubApiService {
                 'Accept': 'application/vnd.github.v3+json',
                 'Authorization': `token ${_apiKey}`
             }
-        }).then(result => result.data);
+        });
     }
 }
