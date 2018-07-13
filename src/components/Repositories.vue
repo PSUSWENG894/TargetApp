@@ -10,7 +10,7 @@
         <md-tab v-if="loaded" md-label="BuildAllRepos">
             <md-button v-if="loaded" class="md-accent md-raised" v-on:click="buildAll()">Build All Repos</md-button>
         </md-tab>
-        <md-tab v-if="loaded" md-label="Lines">
+        <md-tab v-if="loaded" md-label="Contributions">
             <DeveloperContributions v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
         </md-tab>
     </md-tabs>
