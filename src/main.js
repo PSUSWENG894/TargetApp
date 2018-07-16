@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex)
 
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
@@ -10,26 +12,37 @@ import {
   Authorization,
   Repositories
 } from './components'
+
+Vue.use(VueRouter)
 const routes = [{
-    path: '',
+    path: '/auth',
     component: Authorization
   },
   {
     path: '/dashboard',
     name: 'dashboard',
     component: Repositories,
-    props: true
+    props: true,
   }
 ]
 const router = new VueRouter({
   routes // short for `routes: routes`
 })
 
-Vue.use(VueRouter)
+//import App from './App'
+import store from '../store'
 
-import App from './App.vue'
 Vue.config.productionTip = false
-new Vue({
-  render: h => h(App),
-  router: router
+
+//const app = new Vue({
+//  render: h => h(App),
+//  router: router,
+//  store: store,
+//}).$mount('#app')
+const app = new Vue({
+  router,
+  store,
+  components: {
+    "main-nav": MainNav
+  }
 }).$mount('#app')

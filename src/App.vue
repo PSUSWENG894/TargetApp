@@ -1,12 +1,17 @@
 <template>
 <div id="app">
+    <rwv-header></rwv-header>
     <router-view></router-view>
 </div>
 </template>
 
 <script>
+import RevHeader from '@/components/TheHeader'
 export default {
-    name: 'app'
+    name: 'app',
+    components: {
+      RwvHeader
+    }
 }
 </script>
 
