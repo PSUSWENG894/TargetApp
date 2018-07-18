@@ -2,16 +2,16 @@
 <div>
     <md-tabs v-if="loaded">
         <md-tab v-for="repo in repositories" v-bind:key="repo.id" v-bind:id="repo.name" v-bind:md-label="repo.name">
-            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:apiKey="apiKey"/>
+            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:apiKey="travisAPIKey"/>
         </md-tab>
         <md-tab v-if="loaded" md-label="GitHub">
-            <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
+            <GitHubInformation v-bind:apiKeyGitHub="gitAPIKey" v-bind:organization="gitOrg"/>
         </md-tab>
         <md-tab v-if="loaded" md-label="BuildAllRepos">
             <md-button v-if="loaded" class="md-accent md-raised" v-on:click="buildAll()">Build All Repos</md-button>
         </md-tab>
         <md-tab v-if="loaded" md-label="Contributions">
-            <DeveloperContributions v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
+            <DeveloperContributions v-bind:apiKeyGitHub="gitAPIKey" v-bind:organization="gitOrg"/>
         </md-tab>
     </md-tabs>
     <p v-if="error">{{error}}</p>
@@ -32,9 +32,9 @@ export default {
         DeveloperContributions
     },
     props: {
-        apiKey: String,
-        organization: String,
-        apiKeyGitHub: String,
+        initialGitOrg: String,
+        initialGitAPIKey: String,
+        initialTravisAPIKey: String,
     },
     data: function () {
         return {
@@ -42,13 +42,16 @@ export default {
             loaded: false,
             error: null,
             needsReload: false,
-            apiService: null
+            apiService: null,
+            gitOrg: (this.initialGitOrg ? this.initialGitOrg : this.$store.state.gitOrgName),
+            gitAPIKey: (this.initialGitAPIKey ? this.initialGitAPIKey : this.$store.state.gitAPIKey),
+            travisAPIKey: (this.initialTravisAPIKey ? this.initialTravisAPIKey : this.$store.state.travisAPIKey)
         }
     },
     mounted() {
         this.apiService = new TravisApiService();
-        const url = `${constants.apiURL}/owner/${this.organization}/repos`;
-        this.apiService.get(url, this.apiKey).then(result => {
+        const url = `${constants.apiURL}/owner/${this.gitOrg}/repos`;
+        this.apiService.get(url, this.travisAPIKey).then(result => {
             this.repositories = result.repositories;
             this.loaded = true;
         }, error => this.error = error);
