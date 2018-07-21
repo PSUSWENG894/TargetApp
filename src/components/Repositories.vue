@@ -50,6 +50,7 @@ export default {
         const url = `${constants.apiURL}/owner/${this.organization}/repos`;
         this.apiService.get(url, this.apiKey).then(result => {
             this.repositories = result.repositories;
+            console.log(this.repositories);
             this.loaded = true;
         }, error => this.error = error);
     },

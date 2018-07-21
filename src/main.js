@@ -2,12 +2,16 @@ import Vue from 'vue'
 
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/black-green-dark.css' // This line here
+import 'vue-material/dist/theme/default-dark.css'
+// import 'vue-material/dist/theme/black-green-dark.css'
+// import 'vue-material/dist/theme/default.css'
+
 Vue.use(VueMaterial)
 
 import VueRouter from 'vue-router'
 import {
   Authorization,
+  Container,
   Repositories
 } from './components'
 const routes = [{
@@ -17,12 +21,16 @@ const routes = [{
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: Repositories,
-    props: true
+    component: Container,
+    props: true,
+    children: [
+      {path: 'repository/:name', name:'repo', component: Repositories, props: true}
+    ]
   }
 ]
 const router = new VueRouter({
-  routes // short for `routes: routes`
+  mode: 'history',
+  routes: routes
 })
 
 Vue.use(VueRouter)
