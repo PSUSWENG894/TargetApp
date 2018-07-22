@@ -15,8 +15,19 @@
     </md-app-toolbar>
 
     <md-app-drawer :md-active.sync="menuVisible" md-persistent="full">
-        <md-toolbar class="md-transparent" md-elevation="0">Navigation</md-toolbar>
+        <md-toolbar class="md-transparent" md-elevation="0">
+            <h3 class="md-title" style="flex: 1">Navigation</h3>
+            <md-button class="md-icon-button" v-on:click="navigateTo('dashboard-home', defaultRouteParams, true)">
+                <md-icon>home</md-icon>
+            </md-button>
+        </md-toolbar>
         <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization" v-on:nav-repo="changeRepository($event)" />
+        <md-list>
+            <md-list-item v-on:click="navigateTo('cont', defaultRouteParams)">
+                <md-icon>group</md-icon>
+                <span class="md-list-item-text">Contributions</span>
+            </md-list-item>
+        </md-list>
     </md-app-drawer>
 
     <md-app-content>
@@ -56,9 +67,10 @@ export default {
         apiKeyGitHub: String
     },
     data: () => ({
-        menuVisible: false,
+        menuVisible: true,
         selectedRepo: null,
-        repositories: null
+        repositories: null,
+        defaultRouteParams: null
     }),
     mounted() {
         this.apiService = new TravisApiService();
@@ -66,23 +78,28 @@ export default {
         this.apiService.get(url, this.apiKey).then(result => {
             this.repositories = result.repositories;
         }, error => this.error = error);
+        this.defaultRouteParams = {
+            apiKey: this.apiKey,
+            organization: this.organization,
+            apiKeyGitHub: this.apiKeyGitHub
+        }
     },
     methods: {
         changeRepository(repo) {
             this.selectedRepo = repo;
             const repositoryId = this.repositories.find(x => x.github_id === repo.id).id;
             // console.log(`Selected Id: ${repositoryId}`);
-            const params = {
-                name: this.selectedRepo.name,
-                apiKey: this.apiKey,
-                organization: this.organization,
-                apiKeyGitHub: this.apiKeyGitHub,
-                repositoryId: repositoryId
-            };
+            const params = this.defaultRouteParams;
+            params.name = this.selectedRepo.name;
+            params.repositoryId = repositoryId;
+            this.navigateTo('repo', params)
+        },
+        navigateTo(name, params, menuVisible = false) {
             this.$router.push({
-                name: 'repo',
+                name: name,
                 params: params
             });
+            this.menuVisible = menuVisible;
         }
     }
 };

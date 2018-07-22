@@ -5,6 +5,8 @@ import BuildButton from './BuildButton'
 import Authorization from './Authorization.vue'
 import Container from './Container.vue'
 import Repository from './Repository.vue'
+import DeveloperContributions from './DeveloperContributions.vue'
+import Home from './Home.vue'
 
 export {
     PassFailChart,
@@ -13,5 +15,7 @@ export {
     BuildButton,
     Authorization,
     Container,
-    Repository
+    Repository,
+    DeveloperContributions,
+    Home
 }

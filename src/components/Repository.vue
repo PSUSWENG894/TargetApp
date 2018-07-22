@@ -1,6 +1,6 @@
 <template>
 <div>
-     <BuildInformation v-bind:repositoryId="repositoryId" v-bind:apiKey="apiKey"/>
+    <BuildInformation v-bind:repositoryId="repositoryId" v-bind:apiKey="apiKey" />
 </div>
 </template>
 
