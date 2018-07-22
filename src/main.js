@@ -12,20 +12,22 @@ import VueRouter from 'vue-router'
 import {
   Authorization,
   Container,
-  // Repositories,
-  Repository
+  DeveloperContributions,
+  Repository,
+  Home
 } from './components'
 const routes = [{
     path: '',
     component: Authorization
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
+    path: '/dashboard/:organization/',
     component: Container,
     props: true,
     children: [
-      {path: 'repository/:name', name:'repo', component: Repository, props: true}
+      {path: '', name:'dashboard-home', component: Home, props: true},
+      {path: 'repository/:name', name:'repo', component: Repository, props: true},
+      {path: 'contributions', name:'cont', component: DeveloperContributions, props: true},
     ]
   }
 ]

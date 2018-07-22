@@ -57,7 +57,7 @@ export default {
                     apiKeyGitHub: this.form.apiKeyGitHub,
                 };
                 this.$router.push({
-                    name: 'dashboard',
+                    name: 'dashboard-home',
                     params: params
                 });
             } else {
