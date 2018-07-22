@@ -12,7 +12,8 @@ import VueRouter from 'vue-router'
 import {
   Authorization,
   Container,
-  Repositories
+  // Repositories,
+  Repository
 } from './components'
 const routes = [{
     path: '',
@@ -24,7 +25,7 @@ const routes = [{
     component: Container,
     props: true,
     children: [
-      {path: 'repository/:name', name:'repo', component: Repositories, props: true}
+      {path: 'repository/:name', name:'repo', component: Repository, props: true}
     ]
   }
 ]

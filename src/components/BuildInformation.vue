@@ -31,6 +31,7 @@ export default {
     props: {
         targetRepository: String,
         apiKey: String,
+        repositoryId: Number
     },
     data: function () {
         return {
@@ -49,7 +50,8 @@ export default {
     },
     methods: {
         async fetchData() {
-            const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
+            
+            const url = `${constants.apiURL}/repo/${this.repositoryId}/${this.method}`;
             this.apiService = new TravisApiService();
 
             const getPromise = this.apiService.get(url, this.apiKey);
@@ -67,7 +69,7 @@ export default {
             this.passCount = this.info.filter(x => x.state === passedKey).length;
             this.loaded = true;
 
-            if(this.autoReload) {
+            if (this.autoReload) {
                 let date = new Date();
                 setTimeout(this.fetchData, this.timeBetweenCalls);
                 this.lastReload = date;
@@ -78,8 +80,8 @@ export default {
         this.fetchData();
     },
     watch: {
-        'autoReload': function(newVal, oldVal) {
-            if(oldVal === false && newVal === true){
+        'autoReload': function (newVal, oldVal) {
+            if (oldVal === false && newVal === true) {
                 this.fetchData();
             }
         }

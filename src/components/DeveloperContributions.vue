@@ -83,8 +83,8 @@ export default {
             });
 
             const repoPromiseList = Promise.all(promiseList).then(results => {
-                console.log("Data sending to organizeData");
-                console.log(results);
+                // console.log("Data sending to organizeData");
+                // console.log(results);
                 const organizedData = this.organizeData(promiseList, results);
                 this.setData(organizedData);
             });

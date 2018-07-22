@@ -20,7 +20,7 @@
     </md-app-drawer>
 
     <md-app-content>
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
     </md-app-content>
 </md-app>
 </template>
@@ -71,7 +71,7 @@ export default {
         changeRepository(repo) {
             this.selectedRepo = repo;
             const repositoryId = this.repositories.find(x => x.github_id === repo.id).id;
-            console.log(`Selected Id: ${repositoryId}`);
+            // console.log(`Selected Id: ${repositoryId}`);
             const params = {
                 name: this.selectedRepo.name,
                 apiKey: this.apiKey,

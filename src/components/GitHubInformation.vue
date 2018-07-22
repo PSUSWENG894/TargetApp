@@ -51,7 +51,7 @@ export default {
         setData(theData) {
             this.info = theData;
             this.loaded = true;
-            console.log(this.info);
+            // console.log(this.info);
             if (this.autoReload) {
                 let date = new Date();
                 setTimeout(this.fetchData, this.timeBetweenCalls);
