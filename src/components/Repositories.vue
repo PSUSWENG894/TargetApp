@@ -2,7 +2,7 @@
 <div>
     <md-tabs v-if="loaded">
         <md-tab v-for="repo in repositories" v-bind:key="repo.id" v-bind:id="repo.name" v-bind:md-label="repo.name">
-            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:apiKey="apiKey"/>
+            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:repositoryId="repositoryId" v-bind:apiKey="apiKey"/>
         </md-tab>
         <md-tab v-if="loaded" md-label="GitHub">
             <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
@@ -35,6 +35,7 @@ export default {
         apiKey: String,
         organization: String,
         apiKeyGitHub: String,
+        repositoryId: Number
     },
     data: function () {
         return {
@@ -50,7 +51,7 @@ export default {
         const url = `${constants.apiURL}/owner/${this.organization}/repos`;
         this.apiService.get(url, this.apiKey).then(result => {
             this.repositories = result.repositories;
-            console.log(this.repositories);
+            // console.log(this.repositories);
             this.loaded = true;
         }, error => this.error = error);
     },
@@ -74,13 +75,13 @@ export default {
                         var errorMessage = "An error occurred and no result was found for " + repos[index].name + ", likely repository was deleted.";
                         alert(errorMessage);
                     }, error => {
-                        console.log(error);
+                        // console.log(error);
                         alert(error);
                     });
                 }
                 alert('Successfully sent build request to Travis-CI.org for all repos.');
             }, error => {
-                console.log(error)
+                // console.log(error)
                 alert(error);
             });
         }
