@@ -32,7 +32,7 @@ const routes = [{
   }
 ]
 const router = new VueRouter({
-  // mode: 'history',
+  // mode: 'history', // Github Pages does not handle History Mode Correctly
   routes: routes
 })
 
