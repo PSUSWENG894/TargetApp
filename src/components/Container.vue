@@ -28,6 +28,9 @@
                 <span class="md-list-item-text">Contributions</span>
             </md-list-item>
         </md-list>
+        <div class="footer">
+            <md-button class="md-accent md-raised" v-on:click="buildAll()">Build All Repos</md-button>
+        </div>
     </md-app-drawer>
 
     <md-app-content>
@@ -48,6 +51,14 @@
 
 .md-sub-title {
     margin-left: 8px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 </style>
 
@@ -100,6 +111,32 @@ export default {
                 params: params
             });
             this.menuVisible = menuVisible;
+        },
+         buildAll(){
+            const url = `${constants.apiURL}/owner/${this.organization}/repos`;
+            this.apiService.get(url, this.apiKey).then(result => {
+                var repos = result.repositories;
+                const messageBody = `${constants.buildMasterBody}`;
+                var index;
+                for (index = 0; index < repos.length; index++) {
+                    var url = `${constants.apiURL}${repos[index]['@href']}/requests`;
+                    this.apiService.post(url, messageBody, this.apiKey).then(result => {
+                        if (!this.needsReload) {
+                            this.needsReload = result.request.id > 0;
+                        }
+                    }, () => {
+                        var errorMessage = "An error occurred and no result was found for " + repos[index].name + ", likely repository was deleted.";
+                        alert(errorMessage);
+                    }, error => {
+                        // console.log(error);
+                        alert(error);
+                    });
+                }
+                alert('Successfully sent build request to Travis-CI.org for all repos.');
+            }, error => {
+                // console.log(error)
+                alert(error);
+            });
         }
     }
 };
