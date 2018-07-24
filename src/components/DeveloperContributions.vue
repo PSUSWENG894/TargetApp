@@ -36,8 +36,8 @@ import * as constants from "../../config";
 export default {
     components: {},
     props: {
-        organization: String,
-        apiKeyGitHub: String
+        gitOrg: String,
+        gitAPIKey: String
     },
     data: function () {
         return {
@@ -73,11 +73,10 @@ export default {
         getRepositoryContributions(repositoryList) {
             const promiseList = [];
             repositoryList.forEach(repo => {
-                const url = `${constants.apiURLGitHub}/repos/${
-          this.organization
-        }/${repo}/${this.method}`;
+                const url = `${constants.apiURLGitHub}/repos/${this.gitOrg}/` +
+                            `${repo}/${this.method}`;
 
-                const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+                const getPromise = this.apiService.get(url, this.gitAPIKey);
                 getPromise.repo = repo;
                 promiseList.push(getPromise);
             });
@@ -92,8 +91,8 @@ export default {
             return repoPromiseList;
         },
         getRepositoryListPromise() {
-            const url = `${constants.apiURLGitHub}/orgs/${this.organization}/repos`;
-            const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+            const url = `${constants.apiURLGitHub}/orgs/${this.gitOrg}/repos`;
+            const getPromise = this.apiService.get(url, this.gitAPIKey);
             return getPromise;
         },
         organizeData(promiseList, results) {

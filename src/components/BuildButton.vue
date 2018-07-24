@@ -16,7 +16,7 @@ import * as constants from '../../config';
 export default {
     props: {
         targetRepository: String,
-        apiKey: String
+        travisAPIKey: String
     },
     data: function () {
         return {
@@ -30,9 +30,9 @@ export default {
     methods: {
         buildRepo() {
             const messageBody = `${constants.buildMasterBody}`;
-            const url = `${constants.apiURL}${this.targetRepository}/${this.method}`;
+            const url = `${constants.apiURL}/${this.targetRepository}/${this.method}`;
             this.apiService = new TravisApiService();
-            this.apiService.post(url, messageBody, this.apiKey).then(result => {
+            this.apiService.post(url, messageBody, this.travisAPIKey).then(result => {
                 this.buildId = result.request.id
             }, () => {
                 alert('An error occured');

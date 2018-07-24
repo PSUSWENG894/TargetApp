@@ -52,10 +52,16 @@ export default {
             if (this.form.apiKey && this.form.organization && this.form.apiKeyGitHub) {
                 //Navigate to dashboard
                 const params = {
-                    apiKey: this.form.apiKey,
-                    organization: this.form.organization,
-                    apiKeyGitHub: this.form.apiKeyGitHub,
+                    gitOrg: this.form.organization,
+                    initialGitOrg: this.form.organization,
+                    initialGitAPIKey: this.form.apiKeyGitHub,
+                    initialTravisAPIKey: this.form.apiKey,
                 };
+
+                this.$store.commit('setGitOrg', params.initialGitOrg)
+                this.$store.commit('setGitAPI', params.initialGitAPIKey)
+                this.$store.commit('setTravisAPI', params.initialTravisAPIKey)
+
                 this.$router.push({
                     name: 'dashboard-home',
                     params: params

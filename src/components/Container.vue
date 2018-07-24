@@ -21,7 +21,7 @@
                 <md-icon>home</md-icon>
             </md-button>
         </md-toolbar>
-        <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization" v-on:nav-repo="changeRepository($event)" />
+        <GitHubInformation v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg" v-on:nav-repo="changeRepository($event)" />
         <md-list>
             <md-list-item v-on:click="navigateTo('cont', defaultRouteParams)">
                 <md-icon>group</md-icon>
@@ -73,26 +73,32 @@ export default {
         GitHubInformation
     },
     props: {
-        apiKey: String,
-        organization: String,
-        apiKeyGitHub: String
+        initialGitOrg: String,
+        initialGitAPIKey: String,
+        initialTravisAPIKey: String,
     },
-    data: () => ({
-        menuVisible: true,
-        selectedRepo: null,
-        repositories: null,
-        defaultRouteParams: null
-    }),
+    // data: () => ({
+    data: function() {
+        return {
+            menuVisible: true,
+            selectedRepo: null,
+            repositories: null,
+            defaultRouteParams: null,
+            gitOrg: (this.initialGitOrg ? this.initialGitOrg : this.$store.state.gitOrgName),
+            gitAPIKey: (this.initialGitAPIKey ? this.initialGitAPIKey : this.$store.state.gitAPIKey),
+            travisAPIKey: (this.initialTravisAPIKey ? this.initialTravisAPIKey : this.$store.state.travisAPIKey)
+        }
+    },
     mounted() {
         this.apiService = new TravisApiService();
-        const url = `${constants.apiURL}/owner/${this.organization}/repos`;
-        this.apiService.get(url, this.apiKey).then(result => {
+        const url = `${constants.apiURL}/owner/${this.gitOrg}/repos`;
+        this.apiService.get(url, this.travisAPIKey).then(result => {
             this.repositories = result.repositories;
         }, error => this.error = error);
         this.defaultRouteParams = {
-            apiKey: this.apiKey,
-            organization: this.organization,
-            apiKeyGitHub: this.apiKeyGitHub
+            travisAPIKey: this.travisAPIKey,
+            gitOrg: this.gitOrg,
+            gitAPIKey: this.gitAPIKey
         }
     },
     methods: {
@@ -106,6 +112,8 @@ export default {
             this.navigateTo('repo', params)
         },
         navigateTo(name, params, menuVisible = false) {
+            console.log('Navigating to:', name)
+            console.log('  With params:', params)
             this.$router.push({
                 name: name,
                 params: params
@@ -113,14 +121,14 @@ export default {
             this.menuVisible = menuVisible;
         },
          buildAll(){
-            const url = `${constants.apiURL}/owner/${this.organization}/repos`;
-            this.apiService.get(url, this.apiKey).then(result => {
+            const url = `${constants.apiURL}/owner/${this.gitOrg}/repos`;
+            this.apiService.get(url, this.travisAPIKey).then(result => {
                 var repos = result.repositories;
                 const messageBody = `${constants.buildMasterBody}`;
                 var index;
                 for (index = 0; index < repos.length; index++) {
                     var url = `${constants.apiURL}${repos[index]['@href']}/requests`;
-                    this.apiService.post(url, messageBody, this.apiKey).then(result => {
+                    this.apiService.post(url, messageBody, this.travisAPIKey).then(result => {
                         if (!this.needsReload) {
                             this.needsReload = result.request.id > 0;
                         }
