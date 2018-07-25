@@ -71,7 +71,22 @@ export default {
             }
 
         }
-    }
+    },
+    mounted() {
+        if (this.$store.state.gitOrgName && this.$store.state.gitAPIKey && this.$store.state.travisAPIKey) {
+            const params = {
+                gitOrg: this.$store.state.gitOrgName,
+                initialGitOrg: this.$store.state.gitOrgName,
+                initialGitAPIKey: this.$store.state.gitAPIKey,
+                initialTravisAPIKey: this.$store.state.travisAPIKey,
+            };
+
+            this.$router.push({
+                    name: 'dashboard-home',
+                    params: params
+            });
+        }
+    },
 }
 </script>
 

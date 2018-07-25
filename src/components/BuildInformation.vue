@@ -3,7 +3,7 @@
     <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
     <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
     <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount" />
-    <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:travisAPIKey="travisAPIKey" />
+    <BuildButton v-if="loaded" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" />
     <md-list v-if="loaded" id="wah" v-for="build in info" v-bind:key="build.id">
         <md-list-item>
             <div class="md-list-item-text">
@@ -50,7 +50,6 @@ export default {
     },
     methods: {
         async fetchData() {
-            console.log('Fetching builds with travis API key', this.travisAPIKey)
             const url = `${constants.apiURL}/repo/${this.repositoryId}/${this.method}`;
             this.apiService = new TravisApiService();
 

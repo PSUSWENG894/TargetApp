@@ -105,15 +105,12 @@ export default {
         changeRepository(repo) {
             this.selectedRepo = repo;
             const repositoryId = this.repositories.find(x => x.github_id === repo.id).id;
-            // console.log(`Selected Id: ${repositoryId}`);
             const params = this.defaultRouteParams;
-            params.name = this.selectedRepo.name;
+            params.targetRepository = this.selectedRepo.name;
             params.repositoryId = repositoryId;
             this.navigateTo('repo', params)
         },
         navigateTo(name, params, menuVisible = false) {
-            console.log('Navigating to:', name)
-            console.log('  With params:', params)
             this.$router.push({
                 name: name,
                 params: params
@@ -136,13 +133,11 @@ export default {
                         var errorMessage = "An error occurred and no result was found for " + repos[index].name + ", likely repository was deleted.";
                         alert(errorMessage);
                     }, error => {
-                        // console.log(error);
                         alert(error);
                     });
                 }
                 alert('Successfully sent build request to Travis-CI.org for all repos.');
             }, error => {
-                // console.log(error)
                 alert(error);
             });
         }
