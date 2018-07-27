@@ -34,7 +34,7 @@
     </md-app-drawer>
 
     <md-app-content>
-        <router-view :key="namedRoute"></router-view>
+        <router-view :key="$route.fullPath"></router-view>
     </md-app-content>
 </md-app>
 </template>
@@ -81,8 +81,7 @@ export default {
         menuVisible: true,
         selectedRepo: null,
         repositories: null,
-        defaultRouteParams: null,
-        namedRoute: null
+        defaultRouteParams: null
     }),
     mounted() {
         this.apiService = new TravisApiService();
@@ -104,10 +103,9 @@ export default {
             const params = this.defaultRouteParams;
             params.name = this.selectedRepo.name;
             params.repositoryId = repositoryId;
-            this.navigateTo('repo', params);
+            this.navigateTo('repo', params)
         },
         navigateTo(name, params, menuVisible = false) {
-            this.namedRoute = params.name ? params.name : name;
             this.$router.push({
                 name: name,
                 params: params
