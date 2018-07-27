@@ -3,7 +3,7 @@
     <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
     <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
     <br/>
-    <div v-if="loaded" id="aaaaaalinesPerDev" v-for="authorContributions in info" v-bind:key="authorContributions.author">
+<!--     <div v-if="loaded" id="authorContributionsId" v-for="authorContributions in info" v-bind:key="authorContributions.author">
         <md-card>
             <md-card-header>
                 <md-card-header-text>
@@ -25,6 +25,33 @@
                 </md-list>
             </md-card-content>
         </md-card>
+    </div> -->
+
+    <h2>Commits per user per repository</h2>
+    <div>Aome GitHub commits for the same user are showing up in GitHub differently, hence the possibility
+    of multiple users per team member</div>
+    <div v-if="loaded" id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" v-bind:key="author">
+        <md-card>
+            <md-card-header>
+                <md-card-header-text>
+                    <div class="md-title">User: {{author}}</div>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <md-list class="md-double-line" id="authorCommitList" v-for="repository in Object.keys(totalCommitsByUser[author])" v-bind:key="repository">
+                    <md-list-item>
+                        <div class="md-list-item-text">
+                            <span>Repository: {{repository}}</span>
+                        </div>
+                    </md-list-item>
+                    <md-list-item>
+                        <div class="md-list-item-text">
+                            <span>Total commits: {{totalCommitsByUser[author][repository]}}</span>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
     </div>
 </div>
 </template>
@@ -36,8 +63,10 @@ import * as constants from "../../config";
 export default {
     components: {},
     props: {
-        gitOrg: String,
-        gitAPIKey: String
+        // gitOrg: String,
+        // gitAPIKey: String
+        initialGitOrg: String,
+        initialGitAPIKey: String
     },
     data: function () {
         return {
@@ -48,21 +77,39 @@ export default {
             loaded: false,
             startTime: new Date().getTime(),
             timeBetweenCalls: 300000, //ms
-            autoReload: true,
-            lastReload: new Date()
+            autoReload: false,
+            lastReload: new Date(),
+            totalCommitsByUser: {},
+            gitOrg: (this.initialGitOrg ? this.initialGitOrg : this.$store.state.gitOrgName),
+            gitAPIKey: (this.initialGitAPIKey ? this.initialGitAPIKey : this.$store.state.gitAPIKey)
         };
     },
     methods: {
         async fetchData() {
+            // this.totalCommitsByUser = {}
             ///repos/:owner/:repo/stats/contributors
             this.apiService = new GitHubApiService();
 
             let repoPromiseList = [];
 
+            let repoCommitPromiseList = []
+            repoCommitPromiseList.push(this.getRepoCommits('nlpApp'))
+            repoCommitPromiseList.push(this.getRepoCommits('BudgetAPI'))
+            repoCommitPromiseList.push(this.getRepoCommits('TargetApp'))
+            repoCommitPromiseList.push(this.getRepoCommits('TravisCI-Lambda'))
+            repoCommitPromiseList.push(this.getRepoCommits('PhaserGame'))
+            repoCommitPromiseList.push(this.getRepoCommits('AnimationApp'))
+            Promise.all(repoCommitPromiseList).then(result => {
+                this.setData('')
+            })
+            return repoCommitPromiseList
+
+
             const repositoryListPromise = this.getRepositoryListPromise();
             repositoryListPromise.then(reposResult => {
                 const repositoryList = [];
                 reposResult.forEach(repoResult => {
+                    // s
                     repositoryList.push(repoResult.name);
                 });
                 repoPromiseList = this.getRepositoryContributions(repositoryList);
@@ -70,20 +117,40 @@ export default {
 
             return repoPromiseList;
         },
+        getRepoCommits(repo, page, commits) {
+            const url = `${constants.apiURLGitHub}/repos/${this.gitOrg}/` +
+                            `${repo}/commits`;
+            let urlByPage = url
+            if (page>1) {
+                urlByPage = `${url}?page=${page}`
+            } else
+                page = 1
+            if (!commits) {
+                commits = []
+            }
+            const gitCommitsPromise = this.apiService.getWithHeaders(urlByPage, this.gitAPIKey);
+            gitCommitsPromise.then(result => {
+                if (result.data.length==0) {
+                    this.organizeTotalCommitData(repo, commits)
+                }
+                else {
+                    commits = commits.concat(result.data)
+                    this.getRepoCommits(repo ,page+1, commits)
+                }
+            });
+            
+        },
         getRepositoryContributions(repositoryList) {
             const promiseList = [];
             repositoryList.forEach(repo => {
                 const url = `${constants.apiURLGitHub}/repos/${this.gitOrg}/` +
                             `${repo}/${this.method}`;
-
                 const getPromise = this.apiService.get(url, this.gitAPIKey);
                 getPromise.repo = repo;
                 promiseList.push(getPromise);
             });
 
             const repoPromiseList = Promise.all(promiseList).then(results => {
-                // console.log("Data sending to organizeData");
-                // console.log(results);
                 const organizedData = this.organizeData(promiseList, results);
                 this.setData(organizedData);
             });
@@ -98,13 +165,13 @@ export default {
         organizeData(promiseList, results) {
             const dictByAuthor = {};
             results.forEach((result, index) => {
+
                 result.forEach(contribution => {
                     const repo = promiseList[index].repo;
                     const author = contribution.author.login;
 
                     const authorContributions = dictByAuthor[author] ?
-                        dictByAuthor[author] :
-                        [];
+                        dictByAuthor[author] : [];
                     authorContributions.push({
                         repository: repo,
                         contribution: contribution
@@ -124,6 +191,34 @@ export default {
 
             return organizedData;
         },
+        organizeTotalCommitData(repo, commits) {
+            let commitCountByAuthor = {};
+            commits.forEach((commit, index) => {
+                let author = ''
+                if(!commit || !commit.author || !commit.author.login) {
+                    author = commit.commit.author.email
+                } else{
+                    author = commit.author.login;
+                }
+
+                let authorCommitCount = commitCountByAuthor[author] ?
+                    commitCountByAuthor[author] : 0;
+                authorCommitCount += 1
+                commitCountByAuthor[author] = authorCommitCount
+            });
+
+            let tmpDict = Object.assign({}, this.totalCommitsByUser)
+            Object.keys(commitCountByAuthor).forEach(key => {
+                if (key in tmpDict){
+                    tmpDict[key][repo] = commitCountByAuthor[key]
+                } else {
+                    tmpDict[key] = {}
+                    tmpDict[key][repo] = commitCountByAuthor[key]
+                }
+            })
+
+            this.totalCommitsByUser = tmpDict
+        },
         setData(theData) {
             this.info = theData;
             this.loaded = true;
@@ -136,6 +231,7 @@ export default {
         }
     },
     mounted() {
+        this.loaded = false
         this.fetchData();
     },
     watch: {
