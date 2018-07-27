@@ -12,15 +12,15 @@ matrix:
         - npm run build:production
         - npm test
         - codecov
-
-      deploy:
-        provider: pages
-        skip-cleanup: true
-        github-token: $GITHUB_TOKEN
-        keep-history: true
-        verbose: true
-        on:
-          all_branches: true
-        local-dir: dist
-        target-branch: gh-pages
-        verbose: true
+        - npm run deploy
+      # deploy:
+      #   provider: pages
+      #   skip-cleanup: true
+      #   github-token: $GITHUB_TOKEN
+      #   keep-history: true
+      #   verbose: true
+      #   on:
+      #     all_branches: true
+      #   local-dir: dist
+      #   target-branch: gh-pages
+      #   verbose: true
