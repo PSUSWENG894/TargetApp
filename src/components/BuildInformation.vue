@@ -3,7 +3,7 @@
     <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
     <md-content>Last Updated: {{lastReload.toLocaleTimeString()}}</md-content>
     <PassFailChart v-if="loaded" v-bind:passCount="passCount" v-bind:failCount="failCount" />
-    <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:apiKey="apiKey" />
+    <BuildButton v-if="loaded" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" />
     <md-list v-if="loaded" id="wah" v-for="build in info" v-bind:key="build.id">
         <md-list-item>
             <div class="md-list-item-text">
@@ -30,7 +30,7 @@ export default {
     },
     props: {
         targetRepository: String,
-        apiKey: String,
+        travisAPIKey: String,
         repositoryId: Number
     },
     data: function () {
@@ -50,11 +50,10 @@ export default {
     },
     methods: {
         async fetchData() {
-            
             const url = `${constants.apiURL}/repo/${this.repositoryId}/${this.method}`;
             this.apiService = new TravisApiService();
 
-            const getPromise = this.apiService.get(url, this.apiKey);
+            const getPromise = this.apiService.get(url, this.travisAPIKey);
             getPromise.then(result => {
                 this.setData(result);
             }, () => {

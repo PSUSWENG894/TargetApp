@@ -19,8 +19,8 @@ import * as constants from "../../config";
 export default {
     components: {},
     props: {
-        organization: String,
-        apiKeyGitHub: String,
+        gitOrg: String,
+        gitAPIKey: String,
     },
     data: function () {
         return {
@@ -37,10 +37,10 @@ export default {
     },
     methods: {
         async fetchData() { ///orgs/:org/repos
-            const url = `${constants.apiURLGitHub}/orgs/${this.organization}/${this.method}`;
+            const url = `${constants.apiURLGitHub}/orgs/${this.gitOrg}/${this.method}`;
             this.apiService = new GitHubApiService();
 
-            const getPromise = this.apiService.get(url, this.apiKeyGitHub);
+            const getPromise = this.apiService.get(url, this.gitAPIKey);
             getPromise.then(result => {
                 this.setData(result)
             }, () => {

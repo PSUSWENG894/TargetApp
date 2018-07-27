@@ -1,6 +1,6 @@
 <template>
 <div>
-    <BuildInformation v-bind:repositoryId="repositoryId" v-bind:apiKey="apiKey" />
+    <BuildInformation v-bind:targetRepository="targetRepository" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" />
 </div>
 </template>
 
@@ -12,10 +12,10 @@ export default {
         BuildInformation
     },
     props: {
-        apiKey: String,
-        organization: String,
-        apiKeyGitHub: String,
-        name: String,
+        travisAPIKey: String,
+        gitOrg: String,
+        gitAPIKey: String,
+        targetRepository: String,
         repositoryId: Number
     },
 }
