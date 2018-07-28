@@ -2,17 +2,19 @@
   "name": "target-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://psusweng894.github.io/TargetApp/",
   "scripts": {
     "start": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:production": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit"
+    "test": "vue-cli-service test:unit",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
-    "js-cookie": "^2.2.0",
+    "gh-pages": "^1.2.0",
     "vue": "^2.5.16",
     "vue-chartjs": "^3.3.1",
     "vue-material": "^1.0.0-beta-10.2",

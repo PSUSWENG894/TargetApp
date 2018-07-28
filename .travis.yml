@@ -12,7 +12,6 @@ matrix:
         - npm run build:production
         - npm test
         - codecov
-
       deploy:
         provider: pages
         skip-cleanup: true
