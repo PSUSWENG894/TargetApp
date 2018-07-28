@@ -108,9 +108,12 @@ export default {
             const params = this.defaultRouteParams;
             params.targetRepository = this.selectedRepo.name;
             params.repositoryId = repositoryId;
+            console.log('Changing repo to: ')
+            console.log(params.repositoryId)
+            console.log(params.targetRepository)
             this.navigateTo('repo', params)
         },
-        navigateTo(name, params, menuVisible = false) {
+        navigateTo(name, params, menuVisible = true) {
             this.$router.push({
                 name: name,
                 params: params
