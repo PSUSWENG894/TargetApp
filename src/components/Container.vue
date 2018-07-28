@@ -23,7 +23,7 @@
         </md-toolbar>
         <GitHubInformation v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg" v-on:nav-repo="changeRepository($event)" />
         <md-list>
-            <md-list-item v-on:click="navigateTo('cont', defaultRouteParams)">
+            <md-list-item v-on:click="viewDeveloperContributions()">
                 <md-icon>group</md-icon>
                 <span class="md-list-item-text">Contributions</span>
             </md-list-item>
@@ -112,6 +112,11 @@ export default {
             console.log(params.repositoryId)
             console.log(params.targetRepository)
             this.navigateTo('repo', params)
+        },
+        viewDeveloperContributions() {
+            const params = this.defaultRouteParams;
+            params.repositories = this.repositories.map(x => x.name);
+            this.navigateTo('cont', params)
         },
         navigateTo(name, params, menuVisible = true) {
             this.$router.push({
