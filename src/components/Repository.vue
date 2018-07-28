@@ -18,6 +18,9 @@ export default {
         targetRepository: String,
         repositoryId: Number
     },
+    mounted() {
+        console.log(this.props);
+    }
 }
 </script>
 

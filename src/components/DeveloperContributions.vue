@@ -91,20 +91,7 @@ export default {
             this.apiService = new GitHubApiService();
 
             let repoPromiseList = [];
-
-            let repoCommitPromiseList = []
-            repoCommitPromiseList.push(this.getRepoCommits('nlpApp'))
-            repoCommitPromiseList.push(this.getRepoCommits('BudgetAPI'))
-            repoCommitPromiseList.push(this.getRepoCommits('TargetApp'))
-            repoCommitPromiseList.push(this.getRepoCommits('TravisCI-Lambda'))
-            repoCommitPromiseList.push(this.getRepoCommits('PhaserGame'))
-            repoCommitPromiseList.push(this.getRepoCommits('AnimationApp'))
-            Promise.all(repoCommitPromiseList).then(result => {
-                this.setData('')
-            })
-            return repoCommitPromiseList
-
-
+            
             const repositoryListPromise = this.getRepositoryListPromise();
             repositoryListPromise.then(reposResult => {
                 const repositoryList = [];
@@ -193,7 +180,7 @@ export default {
         },
         organizeTotalCommitData(repo, commits) {
             let commitCountByAuthor = {};
-            commits.forEach((commit, index) => {
+            commits.forEach((commit) => {
                 let author = ''
                 if(!commit || !commit.author || !commit.author.login) {
                     author = commit.commit.author.email

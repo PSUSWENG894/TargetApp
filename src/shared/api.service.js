@@ -24,7 +24,7 @@ export default class TravisApiService {
                 'Travis-API-Version': '3',
                 'Authorization': `token ${_apiKey}`
             }
-        }).then(result => result.data, result.headers);
+        }).then(result => {result.data, result.headers});
     }
     
     post(_url, _body, _apiKey) {

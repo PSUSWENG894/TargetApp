@@ -30,7 +30,7 @@ const routes = [{
     props: true,
     children: [
       {path: '', name:'dashboard-home', component: Home, props: true},
-      {path: 'repository/:name', name:'repo', component: Repository, props: true},
+      {path: 'repository/:targetRepository', name:'repo', component: Repository, props: true},
       {path: 'contributions', name:'cont', component: DeveloperContributions, props: true},
     ]
   }
