@@ -2,7 +2,7 @@
 <div>
     <md-tabs v-if="loaded">
         <md-tab v-for="repo in repositories" v-bind:key="repo.id" v-bind:id="repo.name" v-bind:md-label="repo.name">
-            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:repositoryId="repositoryId" v-bind:apiKey="apiKey"/>
+            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:repositoryId="repositoryId" v-bind:apiKeyGitHub="apiKeyGitHub"/>
         </md-tab>
         <md-tab v-if="loaded" md-label="GitHub">
             <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>
@@ -32,9 +32,9 @@ export default {
         DeveloperContributions
     },
     props: {
-        apiKey: String,
-        organization: String,
-        apiKeyGitHub: String,
+        travisAPIKey: String,
+        gitOrg: String,
+        gitAPIKey: String,
         repositoryId: Number
     },
     data: function () {
@@ -48,8 +48,8 @@ export default {
     },
     mounted() {
         this.apiService = new TravisApiService();
-        const url = `${constants.apiURL}/owner/${this.organization}/repos`;
-        this.apiService.get(url, this.apiKey).then(result => {
+        const url = `${constants.apiURL}/owner/${this.gitOrg}/repos`;
+        this.apiService.get(url, this.travisAPIKey).then(result => {
             this.repositories = result.repositories;
             // console.log(this.repositories);
             this.loaded = true;
@@ -60,14 +60,14 @@ export default {
             return repo['@href'];
         },
         buildAll(){
-            const url = `${constants.apiURL}/owner/${this.organization}/repos`;
-            this.apiService.get(url, this.apiKey).then(result => {
+            const url = `${constants.apiURL}/owner/${this.gitOrg}/repos`;
+            this.apiService.get(url, this.travisAPIKey).then(result => {
                 var repos = result.repositories;
                 const messageBody = `${constants.buildMasterBody}`;
                 var index;
                 for (index = 0; index < repos.length; index++) {
                     var url = `${constants.apiURL}${repos[index]['@href']}/requests`;
-                    this.apiService.post(url, messageBody, this.apiKey).then(result => {
+                    this.apiService.post(url, messageBody, this.travisAPIKey).then(result => {
                         if (!this.needsReload) {
                             this.needsReload = result.request.id > 0;
                         }
