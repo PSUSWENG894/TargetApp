@@ -19,7 +19,7 @@ matrix:
         keep-history: true
         verbose: true
         on:
-          all_branches: true
+          branch: master
         local-dir: dist
         target-branch: gh-pages
         verbose: true

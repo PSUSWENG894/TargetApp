@@ -36,7 +36,7 @@
         },
         props: {
             targetRepository: String,
-            apiKey: String,
+            travisAPIKey: String,
             repositoryId: Number
         },
         data: function () {
@@ -64,7 +64,7 @@
                 const url = `${constants.apiURL}/repo/${this.repositoryId}/${this.method}?limit=100`;
                 this.apiService = new TravisApiService();
 
-                const getPromise = this.apiService.get(url, this.apiKey);
+                const getPromise = this.apiService.get(url, this.travisAPIKey);
                 getPromise.then(result => {
                     this.setData(result);
                 }, () => {
@@ -94,7 +94,7 @@
                 let unsuccessfulData = [];
                 let successLabels = [];
                 let unsuccessLabels = [];
-                builds.forEach((build, index) => {
+                builds.forEach((build) => {
                     if (build.state === 'passed') {
                         successData.push(build.duration);
                         successLabels.push(new Date(build.finished_at).toDateString());
