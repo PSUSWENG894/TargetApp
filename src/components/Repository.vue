@@ -1,6 +1,6 @@
 <template>
 <div>
-    <BuildInformation v-bind:targetRepository="targetRepository" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" />
+    <BuildInformation v-bind:targetRepository="targetRepository" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg"/>
 </div>
 </template>
 

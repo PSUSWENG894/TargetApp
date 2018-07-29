@@ -2,7 +2,7 @@
 <div>
     <md-tabs v-if="loaded">
         <md-tab v-for="repo in repositories" v-bind:key="repo.id" v-bind:id="repo.name" v-bind:md-label="repo.name">
-            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:repositoryId="repositoryId" v-bind:apiKeyGitHub="apiKeyGitHub"/>
+            <BuildInformation v-bind:targetRepository="getRepoHref(repo)" v-bind:travisAPIKey="travisAPIKey" v-bind:repositoryId="repositoryId" v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg"/>
         </md-tab>
         <md-tab v-if="loaded" md-label="GitHub">
             <GitHubInformation v-bind:apiKeyGitHub="apiKeyGitHub" v-bind:organization="organization"/>

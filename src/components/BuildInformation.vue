@@ -3,11 +3,15 @@
     <md-tabs md-sync-route>
         <md-tab id="tab-home" md-label="Builds">
             <md-card md-with-hover>
+
                 <md-card-header class="flex-container">
                     <div class="md-title">Last Updated: {{lastReload.toLocaleTimeString()}}</div>
                     <div style="margin-left: 50px; margin-top: 8px; flex: 1;">
                         <div class="flex-container" style="float: right;">
                             <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+                            <div style="margin-right: 10px">
+                                <SiteButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg"/>
+                            </div>
                             <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:travisAPIKey="travisAPIKey" />
                         </div>
                     </div>
@@ -56,6 +60,7 @@
 import LineChart from './LineChart';
 import PassFailChart from './PassFailChart';
 import BuildButton from './BuildButton';
+import SiteButton from './SiteButton';
 import TravisApiService from '../shared';
 import * as constants from '../../config';
 
@@ -63,12 +68,15 @@ export default {
     components: {
         PassFailChart,
         BuildButton,
+        SiteButton,
         LineChart,
     },
     props: {
         targetRepository: String,
         travisAPIKey: String,
-        repositoryId: Number
+        repositoryId: Number,
+        gitAPIKey: String,
+        gitOrg: String
     },
     data: function () {
         return {
