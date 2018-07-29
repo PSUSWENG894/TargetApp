@@ -53,7 +53,7 @@
                     </md-table-row>
 
                     <template id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" >
-                        <md-table-row v-for="repository in Object.keys(totalCommitsByUser[author])" v-bind:key="repository">
+                        <md-table-row v-for="repository in Object.keys(totalCommitsByUser[author])" >
                             <md-table-cell>{{author}}</md-table-cell>
                             <md-table-cell>{{repository}}</md-table-cell>
                             <md-table-cell md-numeric>{{totalCommitsByUser[author][repository]}}</md-table-cell>
@@ -266,17 +266,5 @@ export default {
   vertical-align: top;
 }
 
-.display-items {
-  display: inline-block;
-  color: #228b22;
-}
 
-.md-card {
-  color: #228b22;
-  border: 1px solid rgba(#000, 0.12);
-}
-
-.md-list-item-text {
-  color: #228b22;
-}
 </style>
