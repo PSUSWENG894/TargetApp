@@ -1,11 +1,7 @@
 <template>
 <div class="build-button">
-    <h2>Press the button below to build this repository in Travis-CI.</h2>
-    <br/>
-    <md-button class="md-accent md-raised" v-on:click="buildRepo">Build Repo</md-button>
-    <br/>
+    <md-button class="md-accent md-raised" v-on:click="buildRepo"><md-icon>build</md-icon> Build Repo</md-button>
     <p v-if="error">{{error}}</p>
-    <br/>
 </div>
 </template>
 
