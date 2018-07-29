@@ -108,13 +108,11 @@ export default {
             const params = this.defaultRouteParams;
             params.targetRepository = this.selectedRepo.name;
             params.repositoryId = repositoryId;
-            console.log('Changing repo to: ')
-            console.log(params.repositoryId)
-            console.log(params.targetRepository)
             this.navigateTo('repo', params)
         },
         viewDeveloperContributions() {
             const params = this.defaultRouteParams;
+            this.selectedRepo = {"name": "Developer Contributions"}
             params.repositories = this.repositories.map(x => x.name);
             this.navigateTo('cont', params)
         },
