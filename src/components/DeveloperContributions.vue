@@ -1,11 +1,16 @@
 <template>
 <div class="display-items">
-    <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
-    <md-content>Last Updated: {{lastReload ? lastReload.toLocaleTimeString() : 'UNKNOWN'}}</md-content>
-    <br/>
-    <h2>Commits per user per repository</h2>
-    <div>Some GitHub commits for the same user are showing up in GitHub differently, hence the possibility of multiple users per team member</div>
-    <div v-if="loaded" id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" v-bind:key="author">
+    <md-card md-with-hover>
+        <md-card-header class="flex-container">
+            <span class="md-title">Last Updated: {{lastReload.toLocaleTimeString()}}</span>
+            <span style="margin-left: 50px; margin-top: 8px; flex: 1;">
+                <span class="flex-container" style="float: right;">
+                    <md-switch type="checkbox" v-model="autoReload">AutoReload</md-switch>
+                </span>
+            </span>
+        </md-card-header>
+    </md-card>
+    <!-- <div v-if="loaded" id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" v-bind:key="author">
         <md-card>
             <md-card-header>
                 <md-card-header-text>
@@ -27,7 +32,38 @@
                 </md-list>
             </md-card-content>
         </md-card>
+    </div> -->
+
+
+
+    <div v-if="loaded" id="userContributionsTableDiv">
+        <md-card>
+            <md-card-header>
+                <md-card-header-text>
+                    <div class="md-title">Commits per user per repository</div>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <md-card-text>Some GitHub commits for the same user are showing up in GitHub differently, hence the possibility of multiple users per team member</md-card-text>
+                <md-table>
+                    <md-table-row>
+                        <md-table-head>User</md-table-head>
+                        <md-table-head>Repository</md-table-head>
+                        <md-table-head md-numeric>Commit Count</md-table-head>
+                    </md-table-row>
+
+                    <template id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" >
+                        <md-table-row v-for="repository in Object.keys(totalCommitsByUser[author])" v-bind:key="repository">
+                            <md-table-cell>{{author}}</md-table-cell>
+                            <md-table-cell>{{repository}}</md-table-cell>
+                            <md-table-cell md-numeric>{{totalCommitsByUser[author][repository]}}</md-table-cell>
+                        </md-table-row>
+                    </template>
+                </md-table>
+            </md-card-content>
+        </md-card>
     </div>
+
 </div>
 </template>
 
