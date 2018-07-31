@@ -8,17 +8,17 @@ We use a library call [VueMaterial](https://vuematerial.io/components) that give
 
 As currently constructed, our application has a login screen:
 
-![login](login.png "Login")
+![login](./images/login.png "Login")
 
 and an App screen:
 
-![app](app.png "Current Application Design")
+![app](./images/app.png "Current Application Design")
 
 Furthermore there are several tabs with information about each repository, this information is not available under the respective repository tab.For example the GitHub tab has information about user Check-Ins for each Repository see example below, while functional this requires a bit more cognitive reasoning than many user's would expect.
 
 ### Example
 
-![example one](example1.png "Example")
+![example one](./images/example1.png "Example")
 All the information about the a repository should be in the repository section.
 
 ## Recommendations
