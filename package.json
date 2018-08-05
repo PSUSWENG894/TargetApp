@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "build:production": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit --watch",
+    "test": "vue-cli-service test:unit",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
