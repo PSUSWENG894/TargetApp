@@ -2,7 +2,9 @@ jest.mock('axios', () => require('./axios.mock.post'));
 
 import Vue from 'vue'
 import BuildButton from '@/components/BuildButton'
-import { mount } from '@vue/test-utils'
+import {
+    mount
+} from '@vue/test-utils'
 
 describe('BuildButton.vue', () => {
 
@@ -14,8 +16,8 @@ describe('BuildButton.vue', () => {
 
     it('test buildRepo', () => {
         const wrapper = mount(BuildButton)
-        wrapper.vm.buildRepo()
-
+        wrapper.vm.apiService.post = jest.fn(() => Promise.resolve({})) 
+        wrapper.vm.buildRepo()        
         expect(wrapper.vm.buildId).toBe(null)
     });
 });

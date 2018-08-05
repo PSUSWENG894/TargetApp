@@ -10,32 +10,6 @@
             </span>
         </md-card-header>
     </md-card>
-    <!-- <div v-if="loaded" id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" v-bind:key="author">
-        <md-card>
-            <md-card-header>
-                <md-card-header-text>
-                    <div class="md-title">User: {{author}}</div>
-                </md-card-header-text>
-            </md-card-header>
-            <md-card-content>
-                <md-list class="md-double-line" id="authorCommitList" v-for="repository in Object.keys(totalCommitsByUser[author])" v-bind:key="repository">
-                    <md-list-item>
-                        <div class="md-list-item-text">
-                            <span>Repository: {{repository}}</span>
-                        </div>
-                    </md-list-item>
-                    <md-list-item>
-                        <div class="md-list-item-text">
-                            <span>Total commits: {{totalCommitsByUser[author][repository]}}</span>
-                        </div>
-                    </md-list-item>
-                </md-list>
-            </md-card-content>
-        </md-card>
-    </div> -->
-
-
-
     <div v-if="loaded" id="userContributionsTableDiv">
         <md-card>
             <md-card-header>
@@ -52,8 +26,8 @@
                         <md-table-head md-numeric>Commit Count</md-table-head>
                     </md-table-row>
 
-                    <template id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" >
-                        <md-table-row v-for="repository in Object.keys(totalCommitsByUser[author])" >
+                    <template id="totalCommitsByUserId" v-for="author in Object.keys(totalCommitsByUser)" v-bind="author">
+                        <md-table-row v-for="repository in Object.keys(totalCommitsByUser[author])" v-bind:key="repository">
                             <md-table-cell>{{author}}</md-table-cell>
                             <md-table-cell>{{repository}}</md-table-cell>
                             <md-table-cell md-numeric>{{totalCommitsByUser[author][repository]}}</md-table-cell>

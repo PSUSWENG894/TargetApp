@@ -43,4 +43,35 @@ describe('BuildInformation.vue', () => {
         expect(wrapper.vm.buildTimeChartDataUnsuccess.datasets[0].data).toEqual(expect.arrayContaining([5]));
         expect(wrapper.vm.buildTimeChartDataUnsuccess.labels).toEqual(expect.arrayContaining([new Date("2015-03-25").toDateString()]));
     });
+    
+    it('should fetch data with error', () => {
+        const wrapper = mount(BuildInformation);
+        wrapper.vm.apiService.get = jest.fn(() => Promise.reject({}))
+
+        wrapper.vm.fetchData();
+
+        expect(wrapper.vm.error).toBe(null);
+    });
+
+    it('should fetch data', async () => {
+        const wrapper = mount(BuildInformation);
+        wrapper.vm.apiService.get = jest.fn(() => Promise.resolve({builds: ['test', 'testSomeMore']}))
+        const spy = jest.spyOn(wrapper.vm,'setData')
+
+        await wrapper.vm.fetchData();
+
+        expect(spy).toHaveBeenCalled();
+    });
+
+    it('should perform post', () => {
+        const wrapper = mount(BuildInformation);
+        wrapper.vm.apiService.post = jest.fn(() => Promise.resolve({}))
+        const spy = jest.spyOn(wrapper.vm.apiService,'post')
+
+        wrapper.vm.redeployBuild(1);
+        
+        expect(spy).toHaveBeenCalled();
+    });
+
+    
 });

@@ -17,9 +17,6 @@ export default {
         gitAPIKey: String,
         targetRepository: String,
         repositoryId: Number
-    },
-    mounted() {
-        console.log(this.props);
     }
 }
 </script>

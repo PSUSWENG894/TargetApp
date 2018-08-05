@@ -12,7 +12,8 @@ describe('DeveloperContributions.vue', () => {
     });
 
     it('test setData', () => {
-        const response = [{
+        const response = [
+            {
                 author: 'auth1',
                 contributions: [{
                         repository: 'TestRepo1',

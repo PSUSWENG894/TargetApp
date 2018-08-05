@@ -12,7 +12,7 @@
                             <div style="margin-right: 10px">
                                 <SiteButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:gitAPIKey="gitAPIKey" v-bind:gitOrg="gitOrg"/>
                             </div>
-                            <BuildButton v-if="loaded" v-bind:targetRepository="targetRepository" v-bind:travisAPIKey="travisAPIKey" />
+                            <BuildButton v-if="loaded" v-bind:repositoryId="repositoryId" v-bind:travisAPIKey="travisAPIKey" />
                         </div>
                     </div>
                 </md-card-header>
@@ -111,10 +111,7 @@ export default {
         },
         redeployBuild(buildId) {
             const url = `${constants.apiURL}/build/${buildId}/restart`;
-            const postPromise = this.apiService.post(url, '', this.travisAPIKey);
-            postPromise.then(result => {
-                console.log(result)
-            }, (error) => console.log(error));
+            this.apiService.post(url, '', this.travisAPIKey);
         },
         setData(theData) {
             const passedKey = 'passed';

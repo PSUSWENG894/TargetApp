@@ -38,7 +38,6 @@ export default {
     methods: {
         async fetchData() { ///orgs/:org/repos
             const url = `${constants.apiURLGitHub}/orgs/${this.gitOrg}/${this.method}`;
-            this.apiService = new GitHubApiService();
 
             const getPromise = this.apiService.get(url, this.gitAPIKey);
             getPromise.then(result => {
@@ -60,6 +59,7 @@ export default {
         }
     },
     mounted() {
+        this.apiService = new GitHubApiService();
         this.fetchData();
     },
     watch: {

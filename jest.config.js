@@ -22,8 +22,11 @@ module.exports = {
   ],
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "**/*.{js,vue}",
-    "!**/node_modules/**"
+    "**/*.{vue}",
+    "!**/node_modules/**",
+    "!**/config/**",
+    "!**/src/components/Repositories.vue",
+    "!**/src/components/SiteButton.vue"
   ],
   "coverageReporters": ["html", "json", "lcov", "text"],
   "coverageDirectory": "coverage"

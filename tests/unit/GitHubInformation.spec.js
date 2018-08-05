@@ -24,4 +24,23 @@ describe('GitHubInformation.vue', () => {
         wrapper.vm.setData(response)
         expect(wrapper.vm.info).toEqual(response);
     });
+
+    it('should fetch data with error', () => {
+        const wrapper = mount(GitHubInformation);
+        wrapper.vm.apiService.get = jest.fn(() => Promise.reject({}))
+
+        wrapper.vm.fetchData();
+
+        expect(wrapper.vm.error).toBe(null);
+    });
+
+    it('should fetch data', async () => {
+        const wrapper = mount(GitHubInformation);
+        wrapper.vm.apiService.get = jest.fn(() => Promise.resolve({}))
+        const spy = jest.spyOn(wrapper.vm,'setData')
+
+        await wrapper.vm.fetchData();
+
+        expect(spy).toHaveBeenCalled();
+    });
 });

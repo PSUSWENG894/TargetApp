@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "build:production": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit",
+    "test": "vue-cli-service test:unit --watch",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -32,7 +32,7 @@
     "@vue/test-utils": "^1.0.0-beta.10",
     "babel-core": "^7.0.0-0",
     "babel-jest": "^22.0.4",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
     "style-loader": "^0.21.0",
     "vue-loader": "^15.1.0",

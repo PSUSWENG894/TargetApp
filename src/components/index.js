@@ -7,6 +7,8 @@ import Container from './Container.vue'
 import Repository from './Repository.vue'
 import DeveloperContributions from './DeveloperContributions.vue'
 import Home from './Home.vue'
+import LineChart from './LineChart.vue'
+import SiteButton from './SiteButton.vue'
 
 export {
     PassFailChart,
@@ -17,5 +19,7 @@ export {
     Container,
     Repository,
     DeveloperContributions,
-    Home
+    Home,
+    LineChart,
+    SiteButton
 }

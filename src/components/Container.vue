@@ -135,11 +135,6 @@ export default {
                         if (!this.needsReload) {
                             this.needsReload = result.request.id > 0;
                         }
-                    }, () => {
-                        var errorMessage = "An error occurred and no result was found for " + repos[index].name + ", likely repository was deleted.";
-                        alert(errorMessage);
-                    }, error => {
-                        alert(error);
                     });
                 }
                 alert('Successfully sent build request to Travis-CI.org for all repos.');
